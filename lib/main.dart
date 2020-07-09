@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 import 'dart:io';
+import 'dart:convert';
+
 //import './camera.dart';
 
 void main() {
@@ -61,18 +64,51 @@ class SecondRoute extends StatefulWidget {
   }
 }
 
+
 class _SecondRouteState extends State<SecondRoute> {
 //class SecondRoute extends StatelessWidget {
 
   File _image;
-  final picker = ImagePicker();
+  final _picker = ImagePicker();
+  Quote _quoteOfTheDay;
+  int _statusCode;
 
   Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
+    final pickedFile = await _picker.getImage(source: ImageSource.camera);
 
     setState(() {
       _image = File(pickedFile.path);
     });
+    print(_image);
+  }
+
+  Future _makeGetRequest() async {
+    // make GET request
+    String url = 'https://api.imgur.com/3/upload';
+    final request = http.MultipartRequest('post', Uri.parse(url));
+    request.fields['type'] = 'file';
+    request.files.add(await http.MultipartFile.fromPath('image', _image.path));
+    request.headers['Authorization'] = 'Bearer 5eeae49394cd929e299785c8805bd168fc675280';
+//    'Authorization: Bearer 5eeae49394cd929e299785c8805bd168fc675280' // this only works for a month from July 9
+
+    http.StreamedResponse response = await request.send();
+    // sample info available in response
+    int statusCode = response.statusCode;
+    Map<String, String> headers = response.headers;
+    String contentType = headers['content-type'];
+    String rawJson = await response.stream.bytesToString();
+//
+    Map<String, dynamic> map = jsonDecode(rawJson);
+//    String quote = map["contents"]["quotes"][0]["quote"];
+//    String author = map["contents"]["quotes"][0]["author"];
+//
+//    setState(() {
+//      _quoteOfTheDay = Quote(quote, author);
+//      _statusCode = statusCode;
+//    });
+
+    print(statusCode);
+    print(rawJson);
   }
 
   @override
@@ -120,7 +156,7 @@ class _SecondRouteState extends State<SecondRoute> {
       body: Container(
           width: double.infinity,
           child: Column(
-          children: <Widget>[
+            children: <Widget>[
 //            Expanded(
 //                child: Text('Camera Screen to show here'),
 //            ),
@@ -136,7 +172,8 @@ class _SecondRouteState extends State<SecondRoute> {
                   ? Text('No image selected.')
                   : Image.file(_image),
             ),
-            RaisedButton.icon(
+            _image == null
+            ? RaisedButton.icon(
 //                onPressed: () {
 //                  Navigator.pop(context);
 //                },
@@ -145,7 +182,19 @@ class _SecondRouteState extends State<SecondRoute> {
                 textColor: Colors.white,
                 icon: Icon(Icons.image),
                 label: Text('SCAN')
+            )
+            : RaisedButton(
+              onPressed: _makeGetRequest,
+              color: Colors.pink,
+              textColor: Colors.white,
+              child: Text('USE'),
             ),
+//            _statusCode == 200
+//            ? Text(_quoteOfTheDay.quote)
+//            : Container(
+//              height: 0,
+//              width: 0,
+//            ),
           ],
         ),
       ),
@@ -201,4 +250,10 @@ class _ThirdRouteState extends State<ThirdRoute> {
       ),
     );
   }
+}
+
+class Quote {
+  Quote(this.quote, this.author);
+  final String quote;
+  final String author;
 }

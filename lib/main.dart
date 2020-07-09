@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'dart:convert';
 
+
 //import './camera.dart';
 
 void main() {
+  Future main() async {
+    await DotEnv().load('.env');
+  }
+
   runApp(MaterialApp(
     title: 'Navigation Basics',
     home: FirstRoute(),
@@ -88,9 +94,9 @@ class _SecondRouteState extends State<SecondRoute> {
     final request = http.MultipartRequest('post', Uri.parse(url));
     request.fields['type'] = 'file';
     request.files.add(await http.MultipartFile.fromPath('image', _image.path));
-    request.headers['Authorization'] = 'Bearer 5eeae49394cd929e299785c8805bd168fc675280';
+    request.headers['Authorization'] = DotEnv().env['IMGUR_AUTHORIZATION_KEY'];
 //    'Authorization: Bearer 5eeae49394cd929e299785c8805bd168fc675280' // this only works for a month from July 9
-
+//    DotEnv().env['VAR_NAME'];
     http.StreamedResponse response = await request.send();
     // sample info available in response
     int statusCode = response.statusCode;

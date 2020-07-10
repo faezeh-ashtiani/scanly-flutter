@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'dart:io';
 import 'dart:convert';
 
-
 //import './camera.dart';
 
 void main() {
@@ -36,6 +35,15 @@ class FirstRoute extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => ThirdRoute()),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.account_circle, color: Colors.pink,),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyCustomForm()),
               );
             },
           ),
@@ -70,13 +78,12 @@ class SecondRoute extends StatefulWidget {
   }
 }
 
-
 class _SecondRouteState extends State<SecondRoute> {
 //class SecondRoute extends StatelessWidget {
 
   File _image;
   final _picker = ImagePicker();
-  Quote _quoteOfTheDay;
+//  Quote _quoteOfTheDay;
   int _statusCode;
 
   Future getImage() async {
@@ -195,12 +202,6 @@ class _SecondRouteState extends State<SecondRoute> {
               textColor: Colors.white,
               child: Text('USE'),
             ),
-//            _statusCode == 200
-//            ? Text(_quoteOfTheDay.quote)
-//            : Container(
-//              height: 0,
-//              width: 0,
-//            ),
           ],
         ),
       ),
@@ -258,8 +259,98 @@ class _ThirdRouteState extends State<ThirdRoute> {
   }
 }
 
-class Quote {
-  Quote(this.quote, this.author);
-  final String quote;
-  final String author;
+//// this was initially setup for the quote of the day api
+//class Quote {
+//  Quote(this.quote, this.author);
+//  final String quote;
+//  final String author;
+//}
+
+// Define a custom Form widget.
+class MyCustomForm extends StatefulWidget {
+  @override
+  _MyCustomFormState createState() => _MyCustomFormState();
 }
+
+// Define a corresponding State class.
+// This class holds the data related to the Form.
+class _MyCustomFormState extends State<MyCustomForm> {
+  // Create a text controller and use it to retrieve the current value
+  // of the TextField.
+  final myController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    myController.dispose();
+    super.dispose();
+  }
+
+
+  Future _sendUserInfo() async {
+    print(myController.text);
+//    return showDialog(
+//      context: context,
+//      builder: (context) {
+//        return AlertDialog(
+//          // Retrieve the text the that user has entered by using the
+//          // TextEditingController.
+//          content: Text(myController.text),
+//        );
+//      },
+//    );
+
+    // make Post request
+    String url = 'http://localhost:8081/createUser';
+    final request = http.MultipartRequest('post', Uri.parse(url));
+    request.fields['text'] = myController.text;
+//    request.files.add(await http.MultipartFile.fromPath('image', _image.path));
+//    request.headers['Authorization'] = DotEnv().env['IMGUR_AUTHORIZATION_KEY'];
+//    'Authorization: Bearer 5eeae49394cd929e299785c8805bd168fc675280' // this only works for a month from July 9
+//    DotEnv().env['VAR_NAME'];
+    http.StreamedResponse response = await request.send();
+    // sample info available in response
+    int statusCode = response.statusCode;
+    Map<String, String> headers = response.headers;
+    String contentType = headers['content-type'];
+    String rawJson = await response.stream.bytesToString();
+//
+    Map<String, dynamic> map = jsonDecode(rawJson);
+//    String quote = map["contents"]["quotes"][0]["quote"];
+//    String author = map["contents"]["quotes"][0]["author"];
+//
+//    setState(() {
+//      _quoteOfTheDay = Quote(quote, author);
+//      _statusCode = statusCode;
+//    });
+
+    print(statusCode);
+    print(rawJson);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('User Login'),
+        backgroundColor: Colors.amber,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: TextField(
+          controller: myController,
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+
+        // When the user presses the button, show an alert dialog containing
+        // the text that the user has entered into the text field.
+        onPressed: _sendUserInfo,
+        tooltip: 'Show me the value!',
+        child: Icon(Icons.text_fields),
+        backgroundColor: Colors.pink,
+      ),
+    );
+  }
+}
+

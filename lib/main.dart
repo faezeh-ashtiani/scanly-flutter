@@ -303,7 +303,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
     // make Post request
     String url = 'http://localhost:8081/createUser';
     final request = http.MultipartRequest('post', Uri.parse(url));
-    request.fields['text'] = myController.text;
+    request.fields['name'] = myController.text;
 //    request.files.add(await http.MultipartFile.fromPath('image', _image.path));
 //    request.headers['Authorization'] = DotEnv().env['IMGUR_AUTHORIZATION_KEY'];
 //    'Authorization: Bearer 5eeae49394cd929e299785c8805bd168fc675280' // this only works for a month from July 9

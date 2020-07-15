@@ -97,11 +97,13 @@ class _SecondRouteState extends State<SecondRoute> {
 
   Future _makePostRequest() async {
     // make GET request
-    String url = 'https://api.imgur.com/3/upload';
+//    String url = 'https://api.imgur.com/3/upload';
+    String url = 'http://localhost:8081/ocrImage';
     final request = http.MultipartRequest('post', Uri.parse(url));
-    request.fields['type'] = 'file';
-    request.files.add(await http.MultipartFile.fromPath('image', _image.path));
-    request.headers['Authorization'] = DotEnv().env['IMGUR_AUTHORIZATION_KEY'];
+//    request.fields['type'] = 'file';
+//    request.files.add(await http.MultipartFile.fromPath('image', _image.path));
+    request.files.add(await http.MultipartFile.fromPath('file', _image.path));
+//    request.headers['Authorization'] = DotEnv().env['IMGUR_AUTHORIZATION_KEY'];
 //    'Authorization: Bearer 5eeae49394cd929e299785c8805bd168fc675280' // this only works for a month from July 9
 //    DotEnv().env['VAR_NAME'];
     http.StreamedResponse response = await request.send();

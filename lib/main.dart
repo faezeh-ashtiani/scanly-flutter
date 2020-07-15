@@ -95,7 +95,7 @@ class _SecondRouteState extends State<SecondRoute> {
     print(_image);
   }
 
-  Future _makeGetRequest() async {
+  Future _makePostRequest() async {
     // make GET request
     String url = 'https://api.imgur.com/3/upload';
     final request = http.MultipartRequest('post', Uri.parse(url));
@@ -197,7 +197,7 @@ class _SecondRouteState extends State<SecondRoute> {
                 label: Text('SCAN')
             )
             : RaisedButton(
-              onPressed: _makeGetRequest,
+              onPressed: _makePostRequest,
               color: Colors.pink,
               textColor: Colors.white,
               child: Text('USE'),
@@ -288,44 +288,35 @@ class _MyCustomFormState extends State<MyCustomForm> {
 
 
   Future _sendUserInfo() async {
-    print(myController.text);
-//    return showDialog(
-//      context: context,
-//      builder: (context) {
-//        return AlertDialog(
-//          // Retrieve the text the that user has entered by using the
-//          // TextEditingController.
-//          content: Text(myController.text),
-//        );
-//      },
-//    );
+//    print(myController.text);
+
+    Map<String, dynamic> map = {
+      'name': myController.text,
+    };
+//    print(map);
+    String newJson = jsonEncode(map);
+//    print("this is newJson : " + newJson);
 
     // make Post request
     String url = 'http://localhost:8081/createUser';
-    final request = http.MultipartRequest('post', Uri.parse(url));
-    request.fields['name'] = myController.text;
-//    request.files.add(await http.MultipartFile.fromPath('image', _image.path));
-//    request.headers['Authorization'] = DotEnv().env['IMGUR_AUTHORIZATION_KEY'];
-//    'Authorization: Bearer 5eeae49394cd929e299785c8805bd168fc675280' // this only works for a month from July 9
-//    DotEnv().env['VAR_NAME'];
-    http.StreamedResponse response = await request.send();
+    Map<String, String> requestHeaders = {"Content-type": "application/json"};
+//    String json = '{"name": 'myController.text;'}';
+    final response = await http.post(url, headers: requestHeaders, body: newJson);
+
+//    request.fields['name'] = newJson['name'];
+//    request.fields['name'] = newJson;
+//    http.StreamedResponse response = await request.send();
+
     // sample info available in response
     int statusCode = response.statusCode;
     Map<String, String> headers = response.headers;
     String contentType = headers['content-type'];
-    String rawJson = await response.stream.bytesToString();
-//
-    Map<String, dynamic> map = jsonDecode(rawJson);
-//    String quote = map["contents"]["quotes"][0]["quote"];
-//    String author = map["contents"]["quotes"][0]["author"];
-//
-//    setState(() {
-//      _quoteOfTheDay = Quote(quote, author);
-//      _statusCode = statusCode;
-//    });
+    String responseText = response.body;
+
+//    Map<String, dynamic> newMap = jsonDecode(rawJson);
 
     print(statusCode);
-    print(rawJson);
+    print(responseText);
   }
 
   @override

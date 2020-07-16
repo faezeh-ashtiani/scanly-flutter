@@ -9,6 +9,8 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  final mnBlue = Color(0xff34558B);
+  final chineseYellow = Color(0xffffb41f);
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
   final myController = TextEditingController();
@@ -55,12 +57,16 @@ class _LoginFormState extends State<LoginForm> {
           controller: myController,
         ),
       ),
-      floatingActionButton: RaisedButton(
-        color: Colors.pink,
-        textColor: Colors.white,
-        child: Text('Login'),
-        onPressed: _sendUserInfo,
+      floatingActionButton: Padding(
+        padding: EdgeInsets.all(25),
+        child: RaisedButton(
+          color: Colors.pink,
+          textColor: Colors.white,
+          child: Text('Login'),
+          onPressed: _sendUserInfo,
+        ),
       ),
+
 //      floatingActionButton: FloatingActionButton(
 //
 //        onPressed: _sendUserInfo,

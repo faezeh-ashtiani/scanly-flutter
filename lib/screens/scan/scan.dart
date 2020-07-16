@@ -14,6 +14,8 @@ class Scan extends StatefulWidget {
 }
 
 class _ScanState extends State<Scan> {
+  final mnBlue = Color(0xff34558B);
+  final chineseYellow = Color(0xffffb41f);
 
   File _image;
   final _picker = ImagePicker();
@@ -112,6 +114,15 @@ class _ScanState extends State<Scan> {
                   ? Text('No image selected.')
                   : Image.file(_image),
             ),
+//            Center(
+//              child: Container(
+//                  margin: const EdgeInsets.all(10.0),
+//                  color: Colors.amber[600],
+//                  width: 48.0,
+//                  height: 48.0,
+//
+//              ),
+//            ),
             _image == null
                 ? RaisedButton.icon(
 //                onPressed: () {

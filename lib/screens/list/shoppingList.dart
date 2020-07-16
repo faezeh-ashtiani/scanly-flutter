@@ -14,6 +14,9 @@ class ShoppingList extends StatefulWidget {
 }
 
 class _ShoppingListState extends State<ShoppingList> {
+  final mnBlue = Color(0xff34558B);
+  final chineseYellow = Color(0xffffb41f);
+
   final List<String> fruits = [ "Apple", "Banana", "Pear", "Orange", "Kiwi" ];
 
   @override

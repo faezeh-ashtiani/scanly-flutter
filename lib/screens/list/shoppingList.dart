@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'dart:convert';
 
 
 class ShoppingList extends StatefulWidget {
@@ -14,7 +15,7 @@ class _ShoppingListState extends State<ShoppingList> {
   final mnBlue = Color(0xff34558B);
   final chineseYellow = Color(0xffffb41f);
 
-  List<String> shopingList;
+  List<String> _shoppingList = [ "Apple", "Banana", "Pear", "Orange", "Kiwi" ];
 
   _getShoppingList() async {
     // make GET request
@@ -24,12 +25,24 @@ class _ShoppingListState extends State<ShoppingList> {
     int statusCode = response.statusCode;
     print(statusCode);
 
+    String json = response.body;
+//    print(json);
+    Map<String, dynamic> map = jsonDecode(json);
+//    print(map);
+    print(map["result"][0]["name"]as String);
+//    Iterable<String> testList = map["result"].map((listItem) {
+//      return listItem["name"] as String;
+//    } as String);
+
+    List<String> localList = [];
+    for (var listItem in map["result"]) {
+      localList.add(listItem["name"]);
+    }
+//    map["result"].map((listItem) => listItem["name"] as String).toList();
+    print(localList);
     setState(() {
-//      shopingList = response.body;
+      _shoppingList = localList;
     });
-//    Map<String, String> headers = response.headers;
-//    String contentType = headers['content-type'];
-//    String json = response.body;
   }
 
   final List<String> fruits = [ "Apple", "Banana", "Pear", "Orange", "Kiwi" ];
@@ -59,7 +72,7 @@ class _ShoppingListState extends State<ShoppingList> {
             padding: EdgeInsets.all(5),
             child: ListView.builder(
               itemBuilder: _buildShoppingListItem,
-              itemCount: shopingList.length, // you can eliminate this param to make it infinite
+              itemCount: _shoppingList.length, // you can eliminate this param to make it infinite
             )
         )
     );
@@ -69,7 +82,7 @@ class _ShoppingListState extends State<ShoppingList> {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Text( shopingList[index], style: TextStyle(fontSize: 22.0), ),
+        child: Text( _shoppingList[index], style: TextStyle(fontSize: 22.0), ),
       ),
     );
   }

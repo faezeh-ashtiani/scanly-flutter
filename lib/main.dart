@@ -98,7 +98,7 @@ class _SecondRouteState extends State<SecondRoute> {
   Future _makePostRequest() async {
     // make GET request
 //    String url = 'https://api.imgur.com/3/upload';
-    String url = 'http://localhost:8081/ocrImage';
+    String url = 'http://192.168.86.21:8080/ocrImage';
     final request = http.MultipartRequest('post', Uri.parse(url));
 //    request.fields['type'] = 'file';
 //    request.files.add(await http.MultipartFile.fromPath('image', _image.path));

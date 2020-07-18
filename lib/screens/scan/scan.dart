@@ -33,7 +33,7 @@ class _ScanState extends State<Scan> {
 
 
   Future _makePostRequest() async {
-    String url = 'http://192.168.0.11:8080/ocrImage';
+    String url = 'https://scanly-ada.herokuapp.com/ocrImage';
     final request = http.MultipartRequest('post', Uri.parse(url));
     request.fields['name'] = 'hala';
     request.files.add(await http.MultipartFile.fromPath('file', _image.path));

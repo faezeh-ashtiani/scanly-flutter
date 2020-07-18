@@ -62,91 +62,91 @@ void main() {
 //            },
 //          ),
 //        ),
-        title: Text('Scanly'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.shopping_cart, color: Colors.pink,),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ThirdRoute()),
-              );
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.account_circle, color: Colors.pink,),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MyCustomForm()),
-              );
-            },
-          ),
-        ],
-      ),
-      body: Center(
-        child: ButtonTheme(
-          minWidth: 100.0,
-          height: 50.0,
-          child: RaisedButton(
-            color: Colors.pink,
-            textColor: Colors.white,
-            child: Text('Scan Receipt'),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SecondRoute()),
-              );
-            },
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class SecondRoute extends StatefulWidget {
-
-  @override
-  State<StatefulWidget> createState() {
-    return _SecondRouteState();
-  }
-}
-
-class _SecondRouteState extends State<SecondRoute> {
-//class SecondRoute extends StatelessWidget {
-
-  File _image;
-  final _picker = ImagePicker();
-//  Quote _quoteOfTheDay;
-  int _statusCode;
-
-  Future getImage() async {
-    final pickedFile = await _picker.getImage(source: ImageSource.camera);
-
-    setState(() {
-      _image = File(pickedFile.path);
-    });
-    print(_image);
-  }
-
-  Future _makePostRequest() async {
-    // make GET request
-//    String url = 'https://api.imgur.com/3/upload';
-    String url = 'http://192.168.86.21:8080/ocrImage';
-    final request = http.MultipartRequest('post', Uri.parse(url));
-//    request.fields['type'] = 'file';
-//    request.files.add(await http.MultipartFile.fromPath('image', _image.path));
-    request.files.add(await http.MultipartFile.fromPath('file', _image.path));
-//    request.headers['Authorization'] = DotEnv().env['IMGUR_AUTHORIZATION_KEY'];
-//    'Authorization: Bearer 5eeae49394cd929e299785c8805bd168fc675280' // this only works for a month from July 9
-//    DotEnv().env['VAR_NAME'];
-    http.StreamedResponse response = await request.send();
-    // sample info available in response
-    int statusCode = response.statusCode;
-    Map<String, String> headers = response.headers;
-    String contentType = headers['content-type'];
-    String rawJson = await response.stream.bytesToString();
+//        title: Text('Scanly'),
+//        actions: <Widget>[
+//          IconButton(
+//            icon: Icon(Icons.shopping_cart, color: Colors.pink,),
+//            onPressed: () {
+//              Navigator.push(
+//                context,
+//                MaterialPageRoute(builder: (context) => ThirdRoute()),
+//              );
+//            },
+//          ),
+//          IconButton(
+//            icon: Icon(Icons.account_circle, color: Colors.pink,),
+//            onPressed: () {
+//              Navigator.push(
+//                context,
+//                MaterialPageRoute(builder: (context) => MyCustomForm()),
+//              );
+//            },
+//          ),
+//        ],
+//      ),
+//      body: Center(
+//        child: ButtonTheme(
+//          minWidth: 100.0,
+//          height: 50.0,
+//          child: RaisedButton(
+//            color: Colors.pink,
+//            textColor: Colors.white,
+//            child: Text('Scan Receipt'),
+//            onPressed: () {
+//              Navigator.push(
+//                context,
+//                MaterialPageRoute(builder: (context) => SecondRoute()),
+//              );
+//            },
+//          ),
+//        ),
+//      ),
+//    );
+//  }
+//}
+//
+//class SecondRoute extends StatefulWidget {
+//
+//  @override
+//  State<StatefulWidget> createState() {
+//    return _SecondRouteState();
+//  }
+//}
+//
+//class _SecondRouteState extends State<SecondRoute> {
+////class SecondRoute extends StatelessWidget {
+//
+//  File _image;
+//  final _picker = ImagePicker();
+////  Quote _quoteOfTheDay;
+//  int _statusCode;
+//
+//  Future getImage() async {
+//    final pickedFile = await _picker.getImage(source: ImageSource.camera);
+//
+//    setState(() {
+//      _image = File(pickedFile.path);
+//    });
+//    print(_image);
+//  }
+//
+//  Future _makePostRequest() async {
+//    // make GET request
+////    String url = 'https://api.imgur.com/3/upload';
+//    String url = 'http://192.168.86.21:8080/ocrImage';
+//    final request = http.MultipartRequest('post', Uri.parse(url));
+////    request.fields['type'] = 'file';
+////    request.files.add(await http.MultipartFile.fromPath('image', _image.path));
+//    request.files.add(await http.MultipartFile.fromPath('file', _image.path));
+////    request.headers['Authorization'] = DotEnv().env['IMGUR_AUTHORIZATION_KEY'];
+////    'Authorization: Bearer 5eeae49394cd929e299785c8805bd168fc675280' // this only works for a month from July 9
+////    DotEnv().env['VAR_NAME'];
+//    http.StreamedResponse response = await request.send();
+//    // sample info available in response
+//    int statusCode = response.statusCode;
+//    Map<String, String> headers = response.headers;
+//    String contentType = headers['content-type'];
+//    String rawJson = await response.stream.bytesToString();
 //      ),
 //    );
 //  }

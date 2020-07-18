@@ -44,8 +44,8 @@ class _ShoppingListState extends State<ShoppingList> {
       _shoppingList = localList;
     });
   }
-
-  final List<String> fruits = [ "Apple", "Banana", "Pear", "Orange", "Kiwi" ];
+//
+//  final List<String> fruits = [ "Apple", "Banana", "Pear", "Orange", "Kiwi" ];
 
   @override
   Widget build(BuildContext context) {

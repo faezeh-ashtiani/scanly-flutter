@@ -5,16 +5,24 @@ import '../../screens/scan/scan.dart';
 import '../../screens/list/shoppingList.dart';
 import '../../screens/login/loginForm.dart';
 
-class FrontPage extends StatelessWidget {
-  final mnBlue = Color(0xff34558B);
-  final chineseYellow = Color(0xffffb41f);
+class FrontPage extends StatefulWidget {
+
+  @override
+  State<StatefulWidget> createState() {
+    return _FrontPageState();
+  }
+}
+
+class _FrontPageState extends State<FrontPage> {
+  final indigoBlue = Color(0xff242A64);
+  final goldenRod = Color(0xffFCAE17);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
 //      backgroundColor: chineseYellow,
       appBar: AppBar(
-        backgroundColor: chineseYellow,
+        backgroundColor: goldenRod,
 //        elevation: 0.0,
 //        title: Text(
 //          'Scanly',
@@ -22,7 +30,7 @@ class FrontPage extends StatelessWidget {
 //        ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.shopping_cart, color: mnBlue,),
+            icon: Icon(Icons.shopping_cart, color: indigoBlue,),
             onPressed: () {
               Navigator.push(
                 context,
@@ -31,7 +39,7 @@ class FrontPage extends StatelessWidget {
             },
           ),
           IconButton(
-            icon: Icon(Icons.account_circle, color: mnBlue,),
+            icon: Icon(Icons.account_circle, color: indigoBlue,),
             onPressed: () {
               Navigator.push(
                 context,
@@ -46,9 +54,9 @@ class FrontPage extends StatelessWidget {
           Padding(
               padding: EdgeInsets.all(50),
               child: Image.asset(
-                'assets/images/shopping_cart.png',
-                width: 250,
-                height: 250,
+                'assets/images/Scanly_logo_01.png',
+                width: 300,
+                height: 400,
 //                colorBlendMode: ,
               )
           ),
@@ -57,8 +65,8 @@ class FrontPage extends StatelessWidget {
               minWidth: 100.0,
               height: 50.0,
               child: RaisedButton(
-                color: mnBlue,
-                textColor: chineseYellow,
+                color: indigoBlue,
+                textColor: goldenRod,
                 child: Text('Scan Receipt'),
                 onPressed: () {
                   Navigator.push(

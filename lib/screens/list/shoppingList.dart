@@ -19,7 +19,8 @@ class _ShoppingListState extends State<ShoppingList> {
 
   _getShoppingList() async {
     // make GET request
-    String url = "https://scanly-ada.herokuapp.com/getShoppingList?name=hala";
+    String url = "http://192.168.0.11:8080//getShoppingList?name=faezeh";
+//    String url = "https://scanly-ada.herokuapp.com/getShoppingList?name=hala";
     Response response = await get(url);
     // sample info available in response
     int statusCode = response.statusCode;

@@ -39,29 +39,34 @@ class _LoginFormState extends State<LoginForm> {
     Map<String, dynamic> map = {
       'name': myController.text,
     };
-
     String newJson = jsonEncode(map);
+
     String url = "${widget.baseUrl}/createUser";
     Map<String, String> requestHeaders = {"Content-type": "application/json"};
-
     final response = await http.post(url, headers: requestHeaders, body: newJson);
 
     // sample info available in response
     int _statusCode = response.statusCode;
     Map<String, String> headers = response.headers;
     String responseText = response.body;
-
     print(_statusCode);
     print(responseText);
+
     widget.setUser(responseText);
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: widget.goldenRod,
       appBar: AppBar(
-        title: Text('User Login'),
-        backgroundColor: Colors.amber,
+        title: Text(
+            'User Login',
+//          style: TextStyle(color: widget.goldenRod),
+        ),
+        backgroundColor: widget.goldenRod,
+        elevation: 0.0,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -71,11 +76,15 @@ class _LoginFormState extends State<LoginForm> {
       ),
       floatingActionButton: Padding(
         padding: EdgeInsets.all(25),
-        child: RaisedButton(
-          color: Colors.pink,
-          textColor: Colors.white,
-          child: Text('Login'),
-          onPressed: _sendUserInfo,
+        child: ButtonTheme(
+          minWidth: 100.0,
+          height: 50.0,
+          child: RaisedButton(
+            color: widget.indigoBlue,
+            textColor: widget.goldenRod,
+            child: Text('Login'),
+            onPressed: _sendUserInfo,
+          ),
         ),
       ),
 

@@ -7,11 +7,13 @@ class ShoppingList extends StatefulWidget {
   final Color indigoBlue;
   final Color goldenRod;
   final String baseUrl;
+  final String user;
 
   ShoppingList({
     this.indigoBlue,
     this.goldenRod,
     this.baseUrl,
+    this.user,
   });
 
   @override
@@ -23,8 +25,9 @@ class _ShoppingListState extends State<ShoppingList> {
   List<String> _shoppingList = [ "Apple", "Banana", "Pear", "Orange", "Kiwi" ];
 
   _getShoppingList() async {
+//    print(widget.user);
     // make GET request
-    String url = "${widget.baseUrl}/getShoppingList?name=fake faezeh";
+    String url = "${widget.baseUrl}/getShoppingList?name=${widget.user}";
 //    String url = "https://scanly-ada.herokuapp.com/getShoppingList?name=hala";
     Response response = await get(url);
     // sample info available in response
@@ -61,7 +64,7 @@ class _ShoppingListState extends State<ShoppingList> {
           iconTheme: IconThemeData(
               color: Colors.pink
           ),
-          title: Text("Hala\'s Shopping List"),
+          title: Text("${widget.user}\'s Shopping List"),
 //        elevation: 0.0,
 //        title: Text(
 //          'Scanly',

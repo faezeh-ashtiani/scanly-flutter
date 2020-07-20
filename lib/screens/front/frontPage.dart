@@ -18,6 +18,16 @@ class _FrontPageState extends State<FrontPage> {
   final _goldenRod = Color(0xffFCAE17);
   final _baseUrl = "http://192.168.0.11:8080";
 
+  String _user = "";
+
+  void setUser(String userName) {
+    setState(() {
+      print("got here");
+      _user = userName;
+      print("the set username is " + userName );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +48,8 @@ class _FrontPageState extends State<FrontPage> {
                 MaterialPageRoute(builder: (context) => ShoppingList(
                       indigoBlue: _indigoBlue,
                       goldenRod: _goldenRod,
-                      baseUrl: _baseUrl
+                      baseUrl: _baseUrl,
+                      user: _user,
                   )
                 ),
               );
@@ -52,7 +63,8 @@ class _FrontPageState extends State<FrontPage> {
                 MaterialPageRoute(builder: (context) => LoginForm(
                       indigoBlue: _indigoBlue,
                       goldenRod: _goldenRod,
-                      baseUrl: _baseUrl
+                      baseUrl: _baseUrl,
+                      setUser: setUser,
                   )
                 ),
               );
@@ -85,7 +97,8 @@ class _FrontPageState extends State<FrontPage> {
                     MaterialPageRoute(builder: (context) => Scan(
                         indigoBlue: _indigoBlue,
                         goldenRod: _goldenRod,
-                        baseUrl: _baseUrl
+                        baseUrl: _baseUrl,
+                        user: _user,
                       )
                     ),
                   );

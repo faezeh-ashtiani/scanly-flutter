@@ -7,11 +7,13 @@ class LoginForm extends StatefulWidget {
   final Color indigoBlue;
   final Color goldenRod;
   final String baseUrl;
+  final Function setUser;
 
   LoginForm({
     this.indigoBlue,
     this.goldenRod,
     this.baseUrl,
+    this.setUser,
   });
 
   @override
@@ -51,6 +53,7 @@ class _LoginFormState extends State<LoginForm> {
 
     print(_statusCode);
     print(responseText);
+    widget.setUser(responseText);
   }
 
   @override

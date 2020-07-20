@@ -9,11 +9,13 @@ class Scan extends StatefulWidget {
   final Color indigoBlue;
   final Color goldenRod;
   final String baseUrl;
+  final String user;
 
   Scan({
     this.indigoBlue,
     this.goldenRod,
     this.baseUrl,
+    this.user,
   });
 
   @override
@@ -38,14 +40,16 @@ class _ScanState extends State<Scan> {
 
 
   Future _makePostRequest() async {
+//    print(widget.user);
     String url = "${widget.baseUrl}/ocrImage";
 //    String url = 'https://scanly-ada.herokuapp.com/ocrImage';
     final request = http.MultipartRequest('post', Uri.parse(url));
-    request.fields['name'] = 'faezeh';
+    request.fields['name'] = widget.user;
     request.files.add(await http.MultipartFile.fromPath('file', _image.path));
     http.StreamedResponse response = await request.send();
     print(response);
     // response is an instance of StreamedResponse
+
 
     setState(() {
       _statusCode = response.statusCode;

@@ -6,16 +6,21 @@ import 'dart:io';
 import 'dart:convert';
 
 class Scan extends StatefulWidget {
+  final Color indigoBlue;
+  final Color goldenRod;
+  final String baseUrl;
+
+  Scan({
+    this.indigoBlue,
+    this.goldenRod,
+    this.baseUrl,
+  });
 
   @override
-  State<StatefulWidget> createState() {
-    return _ScanState();
-  }
+  State<StatefulWidget> createState() => _ScanState();
 }
 
 class _ScanState extends State<Scan> {
-  final mnBlue = Color(0xff34558B);
-  final chineseYellow = Color(0xffffb41f);
 
   File _image;
   final _picker = ImagePicker();
@@ -33,7 +38,7 @@ class _ScanState extends State<Scan> {
 
 
   Future _makePostRequest() async {
-    String url = "http://192.168.0.11:8080/ocrImage";
+    String url = "${widget.baseUrl}/ocrImage";
 //    String url = 'https://scanly-ada.herokuapp.com/ocrImage';
     final request = http.MultipartRequest('post', Uri.parse(url));
     request.fields['name'] = 'faezeh';

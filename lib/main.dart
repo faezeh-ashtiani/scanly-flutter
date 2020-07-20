@@ -8,10 +8,12 @@ void main() {
 //    await DotEnv().load('.env');
 //  }
 
-  runApp(MaterialApp(
-    title: 'Navigation Basics',
-    home: FrontPage(),
-  ));
+  runApp(
+      MaterialApp(
+        title: 'Navigation Basics',
+        home: FrontPage(),
+    )
+  );
 }
 
 //

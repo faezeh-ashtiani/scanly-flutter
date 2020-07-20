@@ -4,22 +4,27 @@ import 'dart:convert';
 
 
 class ShoppingList extends StatefulWidget {
+  final Color indigoBlue;
+  final Color goldenRod;
+  final String baseUrl;
+
+  ShoppingList({
+    this.indigoBlue,
+    this.goldenRod,
+    this.baseUrl,
+  });
 
   @override
-  State<StatefulWidget> createState() {
-    return _ShoppingListState();
-  }
+  State<StatefulWidget> createState() => _ShoppingListState();
 }
 
 class _ShoppingListState extends State<ShoppingList> {
-  final mnBlue = Color(0xff34558B);
-  final chineseYellow = Color(0xffffb41f);
 
   List<String> _shoppingList = [ "Apple", "Banana", "Pear", "Orange", "Kiwi" ];
 
   _getShoppingList() async {
     // make GET request
-    String url = "http://192.168.0.11:8080//getShoppingList?name=faezeh";
+    String url = "${widget.baseUrl}/getShoppingList?name=fake faezeh";
 //    String url = "https://scanly-ada.herokuapp.com/getShoppingList?name=hala";
     Response response = await get(url);
     // sample info available in response
@@ -52,7 +57,7 @@ class _ShoppingListState extends State<ShoppingList> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: chineseYellow,
+          backgroundColor: widget.goldenRod,
           iconTheme: IconThemeData(
               color: Colors.pink
           ),
@@ -64,7 +69,7 @@ class _ShoppingListState extends State<ShoppingList> {
 //        ),
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.shopping_cart, color: mnBlue,),
+              icon: Icon(Icons.shopping_cart, color: widget.indigoBlue,),
               onPressed: _getShoppingList,
             ),
           ],

@@ -14,36 +14,47 @@ class FrontPage extends StatefulWidget {
 }
 
 class _FrontPageState extends State<FrontPage> {
-  final indigoBlue = Color(0xff242A64);
-  final goldenRod = Color(0xffFCAE17);
+  final _indigoBlue = Color(0xff242A64);
+  final _goldenRod = Color(0xffFCAE17);
+  final _baseUrl = "http://192.168.0.11:8080";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-//      backgroundColor: chineseYellow,
+//      backgroundColor: _goldenRod,
       appBar: AppBar(
-        backgroundColor: goldenRod,
+        backgroundColor: _goldenRod,
 //        elevation: 0.0,
 //        title: Text(
 //          'Scanly',
-//          style: TextStyle(color: mnBlue),
+//          style: TextStyle(color: _indigoBlue),
 //        ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.shopping_cart, color: indigoBlue,),
+            icon: Icon(Icons.shopping_cart, color: _indigoBlue,),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ShoppingList()),
+                MaterialPageRoute(builder: (context) => ShoppingList(
+                      indigoBlue: _indigoBlue,
+                      goldenRod: _goldenRod,
+                      baseUrl: _baseUrl
+                  )
+                ),
               );
             },
           ),
           IconButton(
-            icon: Icon(Icons.account_circle, color: indigoBlue,),
+            icon: Icon(Icons.account_circle, color: _indigoBlue,),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => LoginForm()),
+                MaterialPageRoute(builder: (context) => LoginForm(
+                      indigoBlue: _indigoBlue,
+                      goldenRod: _goldenRod,
+                      baseUrl: _baseUrl
+                  )
+                ),
               );
             },
           ),
@@ -65,13 +76,18 @@ class _FrontPageState extends State<FrontPage> {
               minWidth: 100.0,
               height: 50.0,
               child: RaisedButton(
-                color: indigoBlue,
-                textColor: goldenRod,
+                color: _indigoBlue,
+                textColor: _goldenRod,
                 child: Text('Scan Receipt'),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Scan()),
+                    MaterialPageRoute(builder: (context) => Scan(
+                        indigoBlue: _indigoBlue,
+                        goldenRod: _goldenRod,
+                        baseUrl: _baseUrl
+                      )
+                    ),
                   );
                 },
               ),

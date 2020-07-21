@@ -42,7 +42,9 @@ class _FrontPageState extends State<FrontPage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.shopping_cart, color: _indigoBlue,),
-            onPressed: () {
+            onPressed: _user == "" || _user == "no one"
+                    ? () => setUser("no one")
+                    : () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => ShoppingList(
@@ -75,7 +77,7 @@ class _FrontPageState extends State<FrontPage> {
       body: Column(
         children: <Widget>[
           Padding(
-              padding: EdgeInsets.all(50),
+              padding: EdgeInsets.all(40),
               child: Image.asset(
                 'assets/images/Scanly_logo_01.png',
                 width: 300,
@@ -84,6 +86,13 @@ class _FrontPageState extends State<FrontPage> {
               )
           ),
           Center(
+            child: _user == "no one"
+             ? Text("Please First LogIn ")
+                : Text("")
+          ),
+          Padding(
+          padding: EdgeInsets.all(40),
+//          Center(
             child: ButtonTheme(
               minWidth: 100.0,
               height: 50.0,

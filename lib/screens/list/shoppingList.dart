@@ -27,6 +27,7 @@ class _ShoppingListState extends State<ShoppingList> {
   _getShoppingList() async {
 //    print(widget.user);
     // make GET request
+    print("i get here");
     String url = "${widget.baseUrl}/getShoppingList?name=${widget.user}";
 //    String url = "https://scanly-ada.herokuapp.com/getShoppingList?name=hala";
     Response response = await get(url);
@@ -35,7 +36,7 @@ class _ShoppingListState extends State<ShoppingList> {
     print(statusCode);
 
     String json = response.body;
-//    print(json);
+    print(json);
     Map<String, dynamic> map = jsonDecode(json);
 //    print(map);
     print(map["result"][0]["name"]as String);

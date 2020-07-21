@@ -22,7 +22,7 @@ class _FrontPageState extends State<FrontPage> {
 
   void setUser(String userName) {
     setState(() {
-      print("got here");
+//      print("got here");
       _user = userName;
       print("the set username is " + userName );
     });

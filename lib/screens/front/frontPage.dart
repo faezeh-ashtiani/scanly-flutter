@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:http/http.dart';
 
 import '../../screens/scan/scan.dart';
 import '../../screens/list/shoppingList.dart';
@@ -17,7 +20,7 @@ class _FrontPageState extends State<FrontPage> {
   final _indigoBlue = Color(0xff242A64);
   final _goldenRod = Color(0xffFCAE17);
   final _baseUrl = "http://192.168.0.11:8080";
-
+  List<String> _shoppingList = [ "Apple", "Banana", "Pear", "Orange", "Kiwi" ];
   String _user = "";
 
   void setUser(String userName) {
@@ -26,6 +29,38 @@ class _FrontPageState extends State<FrontPage> {
       _user = userName;
       print("the set username is " + userName );
     });
+  }
+
+  _getShoppingList() async {
+    // make GET request
+    print("i get here");
+    String url = "$_baseUrl/getShoppingList?name=$_user";
+    Response response = await get(url);
+
+    // sample info available in response
+    int statusCode = response.statusCode;
+    print(statusCode);
+
+    String json = response.body;
+//    print(json);
+    Map<String, dynamic> map = jsonDecode(json);
+//    print(map);
+    print(map["result"][0]["name"]as String);
+//    Iterable<String> testList = map["result"].map((listItem) {
+//      return listItem["name"] as String;
+//    } as String);
+
+    List<String> localList = [];
+    for (var listItem in map["result"]) {
+      localList.add(listItem["name"]);
+    }
+//    map["result"].map((listItem) => listItem["name"] as String).toList();
+    print(localList);
+//    Future.delayed(const Duration(milliseconds: 3000), () {
+      setState(() {
+        _shoppingList = localList;
+      });
+//    });
   }
 
   @override
@@ -45,16 +80,20 @@ class _FrontPageState extends State<FrontPage> {
             onPressed: _user == "" || _user == "no one"
                     ? () => setUser("no one")
                     : () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ShoppingList(
-                      indigoBlue: _indigoBlue,
-                      goldenRod: _goldenRod,
-                      baseUrl: _baseUrl,
-                      user: _user,
-                  )
-                ),
-              );
+              _getShoppingList();
+              Future.delayed(const Duration(milliseconds: 1200), () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ShoppingList(
+                        indigoBlue: _indigoBlue,
+                        goldenRod: _goldenRod,
+                        baseUrl: _baseUrl,
+                        user: _user,
+                        shoppingList : _shoppingList,
+                    )
+                  ),
+                );
+              });
             },
           ),
           IconButton(

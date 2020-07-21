@@ -5,37 +5,68 @@ import '../../screens/scan/scan.dart';
 import '../../screens/list/shoppingList.dart';
 import '../../screens/login/loginForm.dart';
 
-class FrontPage extends StatelessWidget {
-  final mnBlue = Color(0xff34558B);
-  final chineseYellow = Color(0xffffb41f);
+class FrontPage extends StatefulWidget {
+
+  @override
+  State<StatefulWidget> createState() {
+    return _FrontPageState();
+  }
+}
+
+class _FrontPageState extends State<FrontPage> {
+  final _indigoBlue = Color(0xff242A64);
+  final _goldenRod = Color(0xffFCAE17);
+  final _baseUrl = "http://192.168.0.11:8080";
+
+  String _user = "";
+
+  void setUser(String userName) {
+    setState(() {
+      print("got here");
+      _user = userName;
+      print("the set username is " + userName );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-//      backgroundColor: chineseYellow,
+//      backgroundColor: _goldenRod,
       appBar: AppBar(
-        backgroundColor: chineseYellow,
+        backgroundColor: _goldenRod,
 //        elevation: 0.0,
 //        title: Text(
 //          'Scanly',
-//          style: TextStyle(color: mnBlue),
+//          style: TextStyle(color: _indigoBlue),
 //        ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.shopping_cart, color: mnBlue,),
+            icon: Icon(Icons.shopping_cart, color: _indigoBlue,),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ShoppingList()),
+                MaterialPageRoute(builder: (context) => ShoppingList(
+                      indigoBlue: _indigoBlue,
+                      goldenRod: _goldenRod,
+                      baseUrl: _baseUrl,
+                      user: _user,
+                  )
+                ),
               );
             },
           ),
           IconButton(
-            icon: Icon(Icons.account_circle, color: mnBlue,),
+            icon: Icon(Icons.account_circle, color: _indigoBlue,),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => LoginForm()),
+                MaterialPageRoute(builder: (context) => LoginForm(
+                      indigoBlue: _indigoBlue,
+                      goldenRod: _goldenRod,
+                      baseUrl: _baseUrl,
+                      setUser: setUser,
+                  )
+                ),
               );
             },
           ),
@@ -46,9 +77,9 @@ class FrontPage extends StatelessWidget {
           Padding(
               padding: EdgeInsets.all(50),
               child: Image.asset(
-                'assets/images/shopping_cart.png',
-                width: 250,
-                height: 250,
+                'assets/images/Scanly_logo_01.png',
+                width: 300,
+                height: 400,
 //                colorBlendMode: ,
               )
           ),
@@ -57,13 +88,19 @@ class FrontPage extends StatelessWidget {
               minWidth: 100.0,
               height: 50.0,
               child: RaisedButton(
-                color: mnBlue,
-                textColor: chineseYellow,
+                color: _indigoBlue,
+                textColor: _goldenRod,
                 child: Text('Scan Receipt'),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Scan()),
+                    MaterialPageRoute(builder: (context) => Scan(
+                        indigoBlue: _indigoBlue,
+                        goldenRod: _goldenRod,
+                        baseUrl: _baseUrl,
+                        user: _user,
+                      )
+                    ),
                   );
                 },
               ),

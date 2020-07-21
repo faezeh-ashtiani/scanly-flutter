@@ -4,13 +4,25 @@ import 'dart:convert';
 
 // Define a custom Form widget.
 class LoginForm extends StatefulWidget {
+  final Color indigoBlue;
+  final Color goldenRod;
+  final String baseUrl;
+  final Function setUser;
+
+  LoginForm({
+    this.indigoBlue,
+    this.goldenRod,
+    this.baseUrl,
+    this.setUser,
+  });
+
   @override
-  _LoginFormState createState() => _LoginFormState();
+  _LoginFormState createState() => _LoginFormState(
+  );
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final mnBlue = Color(0xff34558B);
-  final chineseYellow = Color(0xffffb41f);
+
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
   final myController = TextEditingController();
@@ -30,7 +42,7 @@ class _LoginFormState extends State<LoginForm> {
 
     String newJson = jsonEncode(map);
 
-    String url = "http://192.168.86.21:8080/createUser";
+    String url = "${widget.baseUrl}/createUser";
     Map<String, String> requestHeaders = {"Content-type": "application/json"};
 
     final response = await http.post(url, headers: requestHeaders, body: newJson);
@@ -42,6 +54,7 @@ class _LoginFormState extends State<LoginForm> {
 
     print(_statusCode);
     print(responseText);
+    widget.setUser(responseText);
   }
 
   @override

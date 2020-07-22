@@ -27,7 +27,7 @@ class ShoppingList extends StatefulWidget {
 }
 
 class _ShoppingListState extends State<ShoppingList> {
-  
+
 
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
@@ -172,7 +172,7 @@ class _ShoppingListState extends State<ShoppingList> {
             item, style: TextStyle(fontSize: 22.0), ),
         ),
 //      )
-//      LristTile(title: Text('$item')),
+//      ListTile(title: Text('$item')),
     );
   }
 

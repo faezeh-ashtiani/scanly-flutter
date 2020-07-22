@@ -117,9 +117,8 @@ class _FrontPageState extends State<FrontPage> {
             icon: Icon(Icons.shopping_cart, color: _indigoBlue,),
             onPressed: _user == "" || _user == "no one"
                     ? () => setUser("no one")
-                    : () {
-              _getShoppingList();
-              Future.delayed(const Duration(milliseconds: 1200), () {
+                    : () async {
+              await _getShoppingList();
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ShoppingList(
@@ -132,28 +131,25 @@ class _FrontPageState extends State<FrontPage> {
                     )
                   ),
                 );
-              });
             },
           ),
           IconButton(
           icon: Icon(Icons.receipt, color: _indigoBlue,),
           onPressed: _user == "" || _user == "no one"
-                ? () => setUser("no one")
-                : () {
-                  _getRecommendationsList();
-                  Future.delayed(const Duration(milliseconds: 12000), () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => RecommendationsList(
-                        indigoBlue: _indigoBlue,
-                        goldenRod: _goldenRod,
-                        // baseUrl: _baseUrl,
-                        user: _user,
-                        recommendationsList : _recommendationsList,
-                      )
-                    ),
-                  );
-                });
+            ? () => setUser("no one")
+            : () async {
+              await  _getRecommendationsList();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RecommendationsList(
+                    indigoBlue: _indigoBlue,
+                    goldenRod: _goldenRod,
+                    // baseUrl: _baseUrl,
+                    user: _user,
+                    recommendationsList : _recommendationsList,
+                  )
+                ),
+              );
             }
           ),
           IconButton(

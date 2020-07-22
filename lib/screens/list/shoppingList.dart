@@ -27,7 +27,7 @@ class ShoppingList extends StatefulWidget {
 }
 
 class _ShoppingListState extends State<ShoppingList> {
-
+  
 
   // Create a text controller and use it to retrieve the current value
   // of the TextField.

@@ -40,6 +40,7 @@ class _ScanState extends State<Scan> {
 
 
   Future _makePostRequest() async {
+
 //    print(widget.user);
     String url = "${widget.baseUrl}/ocrImage";
 //    String url = 'https://scanly-ada.herokuapp.com/ocrImage';

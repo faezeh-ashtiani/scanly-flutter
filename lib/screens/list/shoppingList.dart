@@ -83,6 +83,7 @@ class _ShoppingListState extends State<ShoppingList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: widget.goldenRod,
         iconTheme: IconThemeData(
@@ -112,7 +113,7 @@ class _ShoppingListState extends State<ShoppingList> {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Text( widget.shoppingList[index], style: TextStyle(fontSize: 22.0), ),
+        child: Text( widget.shoppingList[index], style: TextStyle(fontSize: 22.0, color: Colors.white), ),
       ),
     );
   }
@@ -149,7 +150,7 @@ class _ShoppingListState extends State<ShoppingList> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            item, style: TextStyle(fontSize: 22.0), ),
+            item, style: TextStyle(fontSize: 22.0),  ),
         ),
 //      )
     );

@@ -206,7 +206,7 @@ class _FrontPageState extends State<FrontPage> {
                                   user: _user,
 //                                  recommendationsList: _recommendationsList,
                                   setShoppingList: setShoppingList,
-                                  shoppingList: _shoppingList,
+//                                  shoppingList: _shoppingList,
                                   recommendationsListFuture : recommendationsListFuture,
                             )
                         ),

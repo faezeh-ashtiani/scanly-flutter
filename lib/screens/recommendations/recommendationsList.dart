@@ -13,7 +13,7 @@ class RecommendationsList extends StatefulWidget {
 //  List<String> recommendationsList;
   final String baseUrl;
   final Function setShoppingList;
-  List<String> shoppingList;
+//  List<String> shoppingList;
   Future<List<String>> recommendationsListFuture;
 
   RecommendationsList({
@@ -23,7 +23,7 @@ class RecommendationsList extends StatefulWidget {
     this.recommendationsListFuture,
     this.baseUrl,
     this.setShoppingList,
-    this.shoppingList,
+//    this.shoppingList,
   });
 
   @override
@@ -76,6 +76,43 @@ class _RecommendationsListState extends State<RecommendationsList> {
     print(json);
   }
 
+  List<String> _shoppingList;
+  void setShoppingList(List<String> shoppingList) {
+    setState(() {
+      _shoppingList = shoppingList;
+    });
+  }
+
+  _getShoppingList() async {
+    // make GET request
+    print("getting shopping list");
+    String url = "${widget.baseUrl}/getShoppingList?name=${widget.user}";
+    Response response = await get(url);
+
+    // sample info available in response
+    int statusCode = response.statusCode;
+    print(statusCode);
+
+    String json = response.body;
+    //    print(json);
+    Map<String, dynamic> map = jsonDecode(json);
+    //    print(map);
+    //    print(map["result"][0]["name"]as String);
+    //    Iterable<String> testList = map["result"].map((listItem) {
+    //      return listItem["name"] as String;
+    //    } as String);
+
+    List<String> localList = [];
+    for (var listItem in map["result"]) {
+      if (listItem["showOnList"]) {
+        localList.add(listItem["name"]);
+      }
+    }
+    //    map["result"].map((listItem) => listItem["name"] as String).toList();
+    print(localList);
+    setShoppingList(localList);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,7 +138,8 @@ class _RecommendationsListState extends State<RecommendationsList> {
               Icons.shopping_cart,
               color: widget.goldenRod,
             ),
-            onPressed: () {
+            onPressed: () async {
+              await _getShoppingList();
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -111,7 +149,7 @@ class _RecommendationsListState extends State<RecommendationsList> {
                           goldenRod: widget.goldenRod,
                           baseUrl: widget.baseUrl,
                           user: widget.user,
-                          shoppingList: widget.shoppingList,
+                          shoppingList: _shoppingList,
                         )),
               );
             },
@@ -224,15 +262,15 @@ class _RecommendationsListState extends State<RecommendationsList> {
           caption: 'Add',
           color: widget.indigoBlue,
           icon: Icons.add,
-          onTap: () {
+          onTap: () async {
             print('add');
-            _addToShoppingList(index);
+            await _addToShoppingList(index);
             setState(() {
               _recommendationsList.removeAt(index);
             });
-            setState(() {
-              widget.shoppingList.add(_recommendationsList[index]);
-            });
+//            setState(() {
+//              widget.shoppingList.add(_recommendationsList[index]);
+//            });
           },
         ),
         IconSlideAction(

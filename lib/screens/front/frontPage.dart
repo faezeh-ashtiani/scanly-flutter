@@ -210,10 +210,17 @@ class _FrontPageState extends State<FrontPage> {
                                   user: _user,
 //                                  recommendationsList: _recommendationsList,
                                   setShoppingList: setShoppingList,
+<<<<<<< HEAD
                                   shoppingList: _shoppingList,
                                   recommendationsListFuture:
                                       recommendationsListFuture,
                                 )),
+=======
+//                                  shoppingList: _shoppingList,
+                                  recommendationsListFuture : recommendationsListFuture,
+                            )
+                        ),
+>>>>>>> 77e6b5da716f3253fc3d06e2cd7e786dcdd1e7f1
                       );
                     }),
           IconButton(

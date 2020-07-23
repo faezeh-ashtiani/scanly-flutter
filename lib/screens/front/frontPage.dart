@@ -25,6 +25,7 @@ class _FrontPageState extends State<FrontPage> {
   final _baseUrl = "http://192.168.86.34:8080";
   List<String> _shoppingList = ["milk", "eggs", "bread", "apples", "oranges"];
   List<String> _recommendationsList = ["milk", "eggs", "bread", "apples", "oranges"];
+  Future<List<String>> recommendationsListFuture;
   String _user = "";
   File _image;
   int _photoStatusCode;
@@ -60,17 +61,18 @@ class _FrontPageState extends State<FrontPage> {
     print(_photoStatusCode);
 
     String rawJson = await response.stream.bytesToString();
-    print(rawJson);
+    print("this is rawJson" + rawJson);
+
 
     Map<String, dynamic> map = jsonDecode(rawJson);
-    print(map);
+//    print("this is map" + map.toString());
 
     List<String> localList = [];
     for (var listItem in map["products"]) {
       localList.add(listItem["name"]);
     }
 
-    print(localList);
+//    print(localList);
 
     //    setState(() {
     //      _scannedList = localList;
@@ -109,7 +111,7 @@ class _FrontPageState extends State<FrontPage> {
 
   }
 
-  _getRecommendationsList() async {
+  Future<List<String>> _getRecommendationsList() async {
     // make GET request
     print("getting the reccomendations");
     String url = "$_baseUrl/getShoppingRecommendations?name=$_user";
@@ -134,9 +136,10 @@ class _FrontPageState extends State<FrontPage> {
     }
     //    map["result"].map((listItem) => listItem["name"] as String).toList();
     print(localList);
-    setState(() {
-      _recommendationsList = localList;
-    });
+//    setState(() {
+//      _recommendationsList = localList;
+//    });
+    return localList;
   }
 
   final _picker = ImagePicker();
@@ -191,8 +194,8 @@ class _FrontPageState extends State<FrontPage> {
               ),
               onPressed: _user == "" || _user == "no one"
                   ? () => setUser("no one")
-                  : () async {
-                      await _getRecommendationsList();
+                  : ()  {
+                      recommendationsListFuture = _getRecommendationsList();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -201,10 +204,11 @@ class _FrontPageState extends State<FrontPage> {
                                   goldenRod: _goldenRod,
                                   baseUrl: _baseUrl,
                                   user: _user,
-                                  recommendationsList: _recommendationsList,
+//                                  recommendationsList: _recommendationsList,
                                   setShoppingList: setShoppingList,
                                   shoppingList: _shoppingList,
-                                )
+                                  recommendationsListFuture : recommendationsListFuture,
+                            )
                         ),
                       );
                     }),

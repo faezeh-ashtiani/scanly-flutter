@@ -12,7 +12,6 @@ class ShoppingList extends StatefulWidget {
   final String user;
   List<String> shoppingList;
 
-
   ShoppingList({
 //    this.key,
     this.indigoBlue,

@@ -23,15 +23,8 @@ class FrontPage extends StatefulWidget {
 class _FrontPageState extends State<FrontPage> {
   final _indigoBlue = Color(0xff242A64);
   final _goldenRod = Color(0xffFCAE17);
-  final _baseUrl = "http://192.168.86.21:8080";
+  final _baseUrl = "http://192.168.86.34:8080";
   List<String> _shoppingList = ["milk", "eggs", "bread", "apples", "oranges"];
-  List<String> _recommendationsList = [
-    "milk",
-    "eggs",
-    "bread",
-    "apples",
-    "oranges"
-  ];
   Future<List<String>> recommendationsListFuture;
   String _user = "";
   File _image;
@@ -171,58 +164,73 @@ class _FrontPageState extends State<FrontPage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(
+              Icons.add_circle_outline,
+              color: _indigoBlue,
+            ),
+            onPressed: _user == "" || _user == "no one"
+              ? () => setUser("no one")
+              :() {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => addProduct(
+                      indigoBlue: _indigoBlue,
+                      goldenRod: _goldenRod,
+                      baseUrl: _baseUrl,
+                      user: _user,
+                    )
+                  ),
+                );
+              },
+          ),
+          IconButton(
+            icon: Icon(
               Icons.shopping_cart,
               color: _indigoBlue,
             ),
             onPressed: _user == "" || _user == "no one"
-                ? () => setUser("no one")
-                : () async {
-                    await _getShoppingList();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ShoppingList(
-                                indigoBlue: _indigoBlue,
-                                goldenRod: _goldenRod,
-                                baseUrl: _baseUrl,
-                                user: _user,
-                                shoppingList: _shoppingList,
-                              )),
-                    );
-                  },
+              ? () => setUser("no one")
+              : () async {
+                  await _getShoppingList();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ShoppingList(
+                        indigoBlue: _indigoBlue,
+                        goldenRod: _goldenRod,
+                        baseUrl: _baseUrl,
+                        user: _user,
+                        shoppingList: _shoppingList,
+                      )
+                    ),
+                  );
+                },
           ),
+
           IconButton(
-              icon: Icon(
-                Icons.receipt,
-                color: _indigoBlue,
-              ),
-              onPressed: _user == "" || _user == "no one"
-                  ? () => setUser("no one")
-                  : () {
-                      recommendationsListFuture = _getRecommendationsList();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => RecommendationsList(
-                                  indigoBlue: _indigoBlue,
-                                  goldenRod: _goldenRod,
-                                  baseUrl: _baseUrl,
-                                  user: _user,
-//                                  recommendationsList: _recommendationsList,
-                                  setShoppingList: setShoppingList,
-<<<<<<< HEAD
-                                  shoppingList: _shoppingList,
-                                  recommendationsListFuture:
-                                      recommendationsListFuture,
-                                )),
-=======
-//                                  shoppingList: _shoppingList,
-                                  recommendationsListFuture : recommendationsListFuture,
-                            )
-                        ),
->>>>>>> 77e6b5da716f3253fc3d06e2cd7e786dcdd1e7f1
-                      );
-                    }),
+            icon: Icon(
+              Icons.receipt,
+              color: _indigoBlue,
+            ),
+            onPressed: _user == "" || _user == "no one"
+              ? () => setUser("no one")
+              : () {
+                recommendationsListFuture = _getRecommendationsList();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RecommendationsList(
+                      indigoBlue: _indigoBlue,
+                      goldenRod: _goldenRod,
+                      baseUrl: _baseUrl,
+                      user: _user,
+                      setShoppingList: setShoppingList,
+                      recommendationsListFuture: recommendationsListFuture,
+                    )
+                  ),
+                );
+              }
+            ),
           IconButton(
             icon: Icon(
               Icons.account_circle,
@@ -232,30 +240,13 @@ class _FrontPageState extends State<FrontPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => LoginForm(
-                          indigoBlue: _indigoBlue,
-                          goldenRod: _goldenRod,
-                          baseUrl: _baseUrl,
-                          setUser: setUser,
-                        )),
-              );
-            },
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.add_circle_outline,
-              color: _indigoBlue,
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => addProduct(
-                          indigoBlue: _indigoBlue,
-                          goldenRod: _goldenRod,
-                          baseUrl: _baseUrl,
-                          user: _user,
-                        )),
+                  builder: (context) => LoginForm(
+                    indigoBlue: _indigoBlue,
+                    goldenRod: _goldenRod,
+                    baseUrl: _baseUrl,
+                    setUser: setUser,
+                  )
+                ),
               );
             },
           ),
@@ -279,79 +270,83 @@ class _FrontPageState extends State<FrontPage> {
                 textColor: Colors.white,
                 child: Text('Scan Receipt'),
                 onPressed: _user == "" || _user == "no one"
-                    ? () => setUser("no one")
-                    : () {
-                        scannedListFuture = _getImage();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Scan(
-                                    indigoBlue: _indigoBlue,
-                                    goldenRod: _goldenRod,
-                                    user: _user,
-                                    scannedListFuture: scannedListFuture,
-                                  )),
-                        );
-                      },
+                  ? () => setUser("no one")
+                  : () {
+                    scannedListFuture = _getImage();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Scan(
+                          indigoBlue: _indigoBlue,
+                          goldenRod: _goldenRod,
+                          user: _user,
+                          scannedListFuture: scannedListFuture,
+                        )
+                      ),
+                    );
+                  },
               ),
             ),
           ),
           Padding(
-              padding: EdgeInsets.all(20),
-              child: _user == "" || _user == "no one"
-                  ? _user == ""
-                      ? ButtonTheme(
-                          minWidth: 100.0,
-                          height: 50.0,
-                          child: RaisedButton(
-                            color: Colors.white,
-                            textColor: _indigoBlue,
-                            child: Text('Login'),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LoginForm(
-                                          indigoBlue: _indigoBlue,
-                                          goldenRod: _goldenRod,
-                                          baseUrl: _baseUrl,
-                                          setUser: setUser,
-                                        )),
-                              );
-                            },
-                          ),
-                        )
-                      : ButtonTheme(
-                          minWidth: 100.0,
-                          height: 50.0,
-                          child: RaisedButton(
-                            color: Colors.red,
-                            textColor: Colors.white,
-                            child: Text('Login'),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LoginForm(
-                                          indigoBlue: _indigoBlue,
-                                          goldenRod: _goldenRod,
-                                          baseUrl: _baseUrl,
-                                          setUser: setUser,
-                                        )),
-                              );
-                            },
-                          ),
-                        )
-                  : ButtonTheme(
-                      minWidth: 100.0,
-                      height: 50.0,
-                      child: RaisedButton(
-                        color: Colors.white,
-                        textColor: _indigoBlue,
-                        child: Text('Logout'),
-                        onPressed: () => setUser(""),
-                      ),
-                    )),
+            padding: EdgeInsets.all(20),
+            child: _user == "" || _user == "no one"
+              ? _user == ""
+                ? ButtonTheme(
+                  minWidth: 100.0,
+                  height: 50.0,
+                  child: RaisedButton(
+                    color: Colors.white,
+                    textColor: _indigoBlue,
+                    child: Text('Login'),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginForm(
+                            indigoBlue: _indigoBlue,
+                            goldenRod: _goldenRod,
+                            baseUrl: _baseUrl,
+                            setUser: setUser,
+                          )
+                        ),
+                      );
+                    },
+                  ),
+                )
+                : ButtonTheme(
+                  minWidth: 100.0,
+                  height: 50.0,
+                  child: RaisedButton(
+                    color: Colors.red,
+                    textColor: Colors.white,
+                    child: Text('Login'),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LoginForm(
+                            indigoBlue: _indigoBlue,
+                            goldenRod: _goldenRod,
+                            baseUrl: _baseUrl,
+                            setUser: setUser,
+                          )
+                        ),
+                      );
+                    },
+                  ),
+                )
+              : ButtonTheme(
+                  minWidth: 100.0,
+                  height: 50.0,
+                  child: RaisedButton(
+                    color: Colors.white,
+                    textColor: _indigoBlue,
+                    child: Text('Logout'),
+                    onPressed: () => setUser(""),
+                  ),
+                )
+          ),
         ],
       ),
     );

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:http/http.dart';
+import '../../screens/list/shoppingList.dart';
+
 // Define a custom Form widget.
 class addProduct extends StatefulWidget {
   final Color indigoBlue;
@@ -50,6 +53,46 @@ class _addProductState extends State<addProduct> {
     String responseText = response.body;
     print(_statusCode);
     print(responseText);
+    await _getShoppingList();
+    Navigator.pop(context, MaterialPageRoute(
+        builder: (context) => ShoppingList()));
+  }
+
+  List<String> _shoppingList;
+  void setShoppingList(List<String> shoppingList) {
+    setState(() {
+      _shoppingList = shoppingList;
+    });
+  }
+
+  _getShoppingList() async {
+    // make GET request
+    print("getting shopping list");
+    String url = "${widget.baseUrl}/getShoppingList?name=${widget.user}";
+    Response response = await get(url);
+
+    // sample info available in response
+    int statusCode = response.statusCode;
+    print(statusCode);
+
+    String json = response.body;
+    //    print(json);
+    Map<String, dynamic> map = jsonDecode(json);
+    //    print(map);
+    //    print(map["result"][0]["name"]as String);
+    //    Iterable<String> testList = map["result"].map((listItem) {
+    //      return listItem["name"] as String;
+    //    } as String);
+
+    List<String> localList = [];
+    for (var listItem in map["result"]) {
+      if (listItem["showOnList"]) {
+        localList.add(listItem["name"]);
+      }
+    }
+    //    map["result"].map((listItem) => listItem["name"] as String).toList();
+    print(localList);
+    await setShoppingList(localList);
   }
 
   @override

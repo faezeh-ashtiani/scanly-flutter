@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 
+import '../../screens/addProduct/addProduct.dart';
 
 class ShoppingList extends StatefulWidget {
 //  final Key key;
@@ -26,42 +27,6 @@ class ShoppingList extends StatefulWidget {
 }
 
 class _ShoppingListState extends State<ShoppingList> {
-
-
-  // Create a text controller and use it to retrieve the current value
-  // of the TextField.
-//  final myController = TextEditingController();
-//
-//  @override
-//  void dispose() {
-//    // Clean up the controller when the widget is disposed.
-//    myController.dispose();
-//    super.dispose();
-//  }
-//
-//  Future _sendUserInfo() async {
-//
-//    Map<String, dynamic> map = {
-//      'name': myController.text,
-//    };
-//    String newJson = jsonEncode(map);
-//
-//    String url = "${widget.baseUrl}/createUser";
-//    Map<String, String> requestHeaders = {"Content-type": "application/json"};
-//    final response = await http.post(url, headers: requestHeaders, body: newJson);
-//
-//    // sample info available in response
-//    int _statusCode = response.statusCode;
-//    Map<String, String> headers = response.headers;
-//    String responseText = response.body;
-//    print(_statusCode);
-//    print(responseText);
-//
-//    widget.setUser(responseText);
-//    Navigator.pop(context);
-//  }
-//  List<String> _shoppingList = [ "Apple", "Banana", "Pear", "Orange", "Kiwi" ];
-//
 
 
   _removeFromList(int index) async {
@@ -97,6 +62,27 @@ class _ShoppingListState extends State<ShoppingList> {
           ),
         ),
 //        elevation: 0.0,
+        actions: <Widget>[
+          IconButton(
+          icon: Icon(
+            Icons.add_circle_outline,
+            color: widget.indigoBlue,
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => addProduct(
+                    indigoBlue: widget.indigoBlue,
+                    goldenRod: widget.goldenRod,
+                    baseUrl: widget.baseUrl,
+                    user: widget.user,
+                  )
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body:
       Container(

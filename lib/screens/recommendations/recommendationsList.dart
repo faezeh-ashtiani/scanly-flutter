@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import '../../screens/list/shoppingList.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
-
 
 class RecommendationsList extends StatefulWidget {
   final Color indigoBlue;
   final Color goldenRod;
   final String user;
   List<String> recommendationsList;
+  final String baseUrl;
+  final Function setShoppingList;
+  List<String> shoppingList;
 
   RecommendationsList({
     this.indigoBlue,
     this.goldenRod,
     this.user,
     this.recommendationsList,
+    this.baseUrl,
+    this.setShoppingList,
+    this.shoppingList,
   });
 
   @override
@@ -24,6 +30,37 @@ class RecommendationsList extends StatefulWidget {
 
 class _RecommendationsListState extends State<RecommendationsList> {
 
+  _removeFromList(int index) async {
+    print("i am deleting from list");
+
+    final item = widget.recommendationsList[index];
+    String url = "${widget.baseUrl}/updateUserRecommendationProduct?user=${widget.user}&product=$item";
+
+    Response response = await patch(url);
+    // sample info available in response
+    int statusCode = response.statusCode;
+    print(statusCode);
+
+    String json = response.body;
+    print(json);
+
+  }
+
+  _addToShoppingList(int index) async {
+    print("i am adding to shopping list");
+
+    final item = widget.recommendationsList[index];
+    String url = "${widget.baseUrl}/addUserRecommendationProduct?user=${widget.user}&product=$item";
+
+    Response response = await patch(url);
+    // sample info available in response
+    int statusCode = response.statusCode;
+    print(statusCode);
+
+    String json = response.body;
+    print(json);
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,18 +70,37 @@ class _RecommendationsListState extends State<RecommendationsList> {
         iconTheme: IconThemeData(
             color: widget.indigoBlue
         ),
-        title: Text("Recommendations for ${widget.user}"),
+        title: Text(
+            "Recommendations for ${widget.user}",
+            style: TextStyle(
+            fontSize: 18.0,
+            color: widget.indigoBlue,
+          ),
+        ),
 //        elevation: 0.0,
 //        title: Text(
 //          'Scanly',
 //          style: TextStyle(color: mnBlue),
 //        ),
-//          actions: <Widget>[
-//            IconButton(
-//              icon: Icon(Icons.shopping_cart, color: widget.indigoBlue,),
-//              onPressed: _getShoppingList,
-//            ),
-//          ],
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.shopping_cart, color: widget.indigoBlue,),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ShoppingList(
+//                        key: ,
+                  indigoBlue: widget.indigoBlue,
+                  goldenRod: widget.goldenRod,
+                  baseUrl: widget.baseUrl,
+                  user: widget.user,
+                  shoppingList : widget.shoppingList,
+                )
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body:
       Container(
@@ -54,7 +110,6 @@ class _RecommendationsListState extends State<RecommendationsList> {
             itemCount: widget.recommendationsList.length, // you can eliminate this param to make it infinite
           )
       ),
-
     );
   }
 
@@ -101,10 +156,6 @@ class _RecommendationsListState extends State<RecommendationsList> {
     );
   }
 
-
-
-
-
   Widget _buildSlidableListItem(BuildContext context, int index) {
     final item = widget.recommendationsList[index];
 
@@ -136,6 +187,13 @@ class _RecommendationsListState extends State<RecommendationsList> {
         icon: Icons.add,
         onTap: ()  {
           print('add');
+          _addToShoppingList(index);
+          setState(() {
+            widget.recommendationsList.removeAt(index);
+          });
+          setState(() {
+            widget.shoppingList.add(widget.recommendationsList[index]);
+          });
           },
         ),
         IconSlideAction(
@@ -144,6 +202,7 @@ class _RecommendationsListState extends State<RecommendationsList> {
         icon: Icons.delete,
         onTap: () {
           print('delete');
+          _removeFromList(index);
           setState(() {
             widget.recommendationsList.removeAt(index);
           });

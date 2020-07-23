@@ -8,7 +8,7 @@ class ShoppingList extends StatefulWidget {
 //  final Key key;
   final Color indigoBlue;
   final Color goldenRod;
-//  final String baseUrl;
+  final String baseUrl;
   final String user;
   List<String> shoppingList;
 
@@ -17,7 +17,7 @@ class ShoppingList extends StatefulWidget {
 //    this.key,
     this.indigoBlue,
     this.goldenRod,
-//    this.baseUrl,
+    this.baseUrl,
     this.user,
     this.shoppingList,
   });
@@ -63,69 +63,49 @@ class _ShoppingListState extends State<ShoppingList> {
 //  }
 //  List<String> _shoppingList = [ "Apple", "Banana", "Pear", "Orange", "Kiwi" ];
 //
-//  _getShoppingList() async {
-////    print(widget.user);
-//    // make GET request
-//    print("i get here");
-//    String url = "${widget.baseUrl}/getShoppingList?name=${widget.user}";
-////    String url = "https://scanly-ada.herokuapp.com/getShoppingList?name=hala";
-//    Response response = await get(url);
-//    // sample info available in response
-//    int statusCode = response.statusCode;
-//    print(statusCode);
-//
-//    String json = response.body;
-//    print(json);
-//    Map<String, dynamic> map = jsonDecode(json);
-////    print(map);
-//    print(map["result"][0]["name"]as String);
-////    Iterable<String> testList = map["result"].map((listItem) {
-////      return listItem["name"] as String;
-////    } as String);
-//
-//    List<String> localList = [];
-//    for (var listItem in map["result"]) {
-//      localList.add(listItem["name"]);
-//    }
-////    map["result"].map((listItem) => listItem["name"] as String).toList();
-//    print(localList);
-//    setState(() {
-//      _shoppingList = localList;
-//    });
-//  }
-//
-//  final List<String> fruits = [ "Apple", "Banana", "Pear", "Orange", "Kiwi" ];
+
+
+  _removeFromList(int index) async {
+    print("i am deleting from list");
+
+    final item = widget.shoppingList[index];
+    String url = "${widget.baseUrl}/deleteProductFromShoppingList?user=${widget.user}&product=$item";
+
+    Response response = await patch(url);
+    // sample info available in response
+    int statusCode = response.statusCode;
+    print(statusCode);
+
+    String json = response.body;
+    print(json);
+
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: widget.goldenRod,
-          iconTheme: IconThemeData(
-              color: widget.indigoBlue
+      appBar: AppBar(
+        backgroundColor: widget.goldenRod,
+        iconTheme: IconThemeData(
+            color: widget.indigoBlue
+        ),
+        title: Text(
+            "${widget.user}\'s Shopping List",
+            style: TextStyle(
+            fontSize: 18.0,
+            color: widget.indigoBlue,
           ),
-          title: Text("${widget.user}\'s Shopping List"),
+        ),
 //        elevation: 0.0,
-//        title: Text(
-//          'Scanly',
-//          style: TextStyle(color: mnBlue),
-//        ),
-//          actions: <Widget>[
-//            IconButton(
-//              icon: Icon(Icons.shopping_cart, color: widget.indigoBlue,),
-//              onPressed: _getShoppingList,
-//            ),
-//          ],
-        ),
-        body:
-        Container(
-            padding: EdgeInsets.all(5),
-            child: ListView.builder(
-              itemBuilder: _buildDismissibleListItem,
-              itemCount: widget.shoppingList.length, // you can eliminate this param to make it infinite
-            )
-        ),
-
+      ),
+      body:
+      Container(
+          padding: EdgeInsets.all(5),
+          child: ListView.builder(
+            itemBuilder: _buildDismissibleListItem,
+            itemCount: widget.shoppingList.length, // you can eliminate this param to make it infinite
+          )
+      ),
     );
   }
 
@@ -138,7 +118,6 @@ class _ShoppingListState extends State<ShoppingList> {
     );
   }
 
-
   Widget _buildDismissibleListItem(BuildContext context, int index) {
     final item = widget.shoppingList[index];
 
@@ -149,7 +128,8 @@ class _ShoppingListState extends State<ShoppingList> {
       // Provide a function that tells the app
       // what to do after an item has been swiped away.
       onDismissed: (direction) {
-        // Remove the item from the data source.
+
+        _removeFromList(index);
         setState(() {
           widget.shoppingList.removeAt(index);
         });
@@ -160,10 +140,11 @@ class _ShoppingListState extends State<ShoppingList> {
       },
       // Show a red background as the item is swiped away.
       background: Container(
-//        padding: EdgeInsets.only(right: 28.0),
-//        alignment: AlignmentDirectional.centerStart,
         color: Colors.red,
-        child: Icon(Icons.delete_forever, color: Colors.white,),
+        child: Icon(
+          Icons.delete_forever,
+          color: Colors.white,
+        ),
       ),
 //      child: Card(
         child: Padding(
@@ -172,7 +153,6 @@ class _ShoppingListState extends State<ShoppingList> {
             item, style: TextStyle(fontSize: 22.0), ),
         ),
 //      )
-//      ListTile(title: Text('$item')),
     );
   }
 

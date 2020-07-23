@@ -61,8 +61,15 @@ class _LoginFormState extends State<LoginForm> {
     return Scaffold(
       backgroundColor: widget.goldenRod,
       appBar: AppBar(
+        iconTheme: IconThemeData(
+            color: widget.indigoBlue,
+        ),
         title: Text(
             'User Login',
+            style: TextStyle(
+              fontSize: 24.0,
+              color: widget.indigoBlue,
+            ),
 //          style: TextStyle(color: widget.goldenRod),
         ),
         backgroundColor: widget.goldenRod,

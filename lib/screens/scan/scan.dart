@@ -8,72 +8,109 @@ import 'dart:convert';
 class Scan extends StatefulWidget {
   final Color indigoBlue;
   final Color goldenRod;
-  final String baseUrl;
+//  final String baseUrl;
   final String user;
+//  File image;
+//  List<String> scannedList;
+  Future<List<String>> scannedListFuture;
 
   Scan({
     this.indigoBlue,
     this.goldenRod,
-    this.baseUrl,
+//    this.baseUrl,
     this.user,
+//    this.image,
+//    this.scannedList,
+    this.scannedListFuture,
   });
 
   @override
-  State<StatefulWidget> createState() => _ScanState();
+  State<StatefulWidget> createState() => _ScanState(this.scannedListFuture);
 }
 
 class _ScanState extends State<Scan> {
-
-  File _image;
-  final _picker = ImagePicker();
-  int _statusCode;
-
-  Future getImage() async {
-    final pickedFile = await _picker.getImage(source: ImageSource.camera);
-
-    setState(() {
-      _image = File(pickedFile.path);
+  Future<List<String>> scannedListFuture;
+  _ScanState(this.scannedListFuture) {
+    scannedListFuture.then((List<String> scannedList) {
+      setState(() {
+        _scannedList = scannedList;
+      });
     });
-    print(_image);
   }
 
+//  File _image;
+//  final _picker = ImagePicker();
+//  int _statusCode;
+  List<String> _scannedList;
 
 
-  Future _makePostRequest() async {
-
-//    print(widget.user);
-    String url = "${widget.baseUrl}/ocrImage";
-//    String url = 'https://scanly-ada.herokuapp.com/ocrImage';
-    final request = http.MultipartRequest('post', Uri.parse(url));
-    request.fields['name'] = widget.user;
-    request.files.add(await http.MultipartFile.fromPath('file', _image.path));
-    http.StreamedResponse response = await request.send();
-    print(response);
-    // response is an instance of StreamedResponse
-
-
-    setState(() {
-      _statusCode = response.statusCode;
-    });
-
-    print(response.statusCode);
-
+//
+//  Future getImage() async {
+//    final pickedFile = await _picker.getImage(source: ImageSource.camera);
+//
+//    setState(() {
+//      widget.image = File(pickedFile.path);
+////      _image = File(pickedFile.path);
+//    });
+////    print(_image);
+//    print(widget.image);
+//  }
+//
+//  Future _makePostRequest() async {
+//
+////    print(widget.user);
+//    String url = "${widget.baseUrl}/ocrImage";
+////    String url = 'https://scanly-ada.herokuapp.com/ocrImage';
+//    final request = http.MultipartRequest('post', Uri.parse(url));
+//    request.fields['name'] = widget.user;
+////    request.files.add(await http.MultipartFile.fromPath('file', _image.path));
+//    request.files.add(await http.MultipartFile.fromPath('file', widget.image.path));
+//    http.StreamedResponse response = await request.send();
+//    print(response);
+//    // response is an instance of StreamedResponse
+//
+//
+//    setState(() {
+//      _statusCode = response.statusCode;
+//    });
+//
+//    print(response.statusCode);
+//
 //    String rawJson = await response.stream.bytesToString();
 //    print(rawJson);
-
+//
 //    Map<String, dynamic> map = jsonDecode(rawJson);
 //    print(map);
-  }
+//
+//    List<String> localList = [];
+//    for (var listItem in map["products"]) {
+//        localList.add(listItem["name"]);
+//    }
+////    map["result"].map((listItem) => listItem["name"] as String).toList();
+//    print(localList);
+////    Future.delayed(const Duration(milliseconds: 3000), () {
+//    setState(() {
+//      _scannedList = localList;
+//    });
+//  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: widget.indigoBlue,
       appBar: AppBar(
-        backgroundColor: Colors.amber,
+        backgroundColor: widget.indigoBlue,
+        elevation: 0.0,
         iconTheme: IconThemeData(
-            color: Colors.pink
+            color: widget.goldenRod
         ),
-        title: Text("Scanner"),
+        title: Text(
+          "Scanner",
+          style: TextStyle(
+
+            color: widget.goldenRod,
+          ),
+        ),
       ),
 //      body: Stack(
 //        children: <Widget>[
@@ -108,57 +145,55 @@ class _ScanState extends State<Scan> {
 //        ],
 //      )
       body: Container(
-        width: double.infinity,
-        child: Column(
-          children: <Widget>[
-//            Expanded(
-//                child: Text('Camera Screen to show here'),
-//            ),
-//            SizedBox(
-//              height: 600.0,
-//              width: 300.0,
-//              child: Card(
-//                elevation: 1.0,
+        padding: EdgeInsets.all(5),
+//        width: double.infinity,
+        child: _scannedList == null
+          ? Center(
+            child: CircularProgressIndicator(),
+          )
+//          ? Column(
+//              children: <Widget>[
+//  //              CircularProgressIndicator(),
+//                Padding(
+//                  padding: EdgeInsets.all(20),
+//  //            Center(
+////                 child: Image.file(widget.image)
+////                child: _scannedList == null
+////                // child: _scannedList == null
+////                    ? Image.file(widget.image)
+////  //                  : Image.file(_image),
+////                    : ListView.builder(
+////                      itemBuilder: _buildListItem,
+////                      itemCount: _scannedList.length, // you can eliminate this param to make it infinite
+////                ),
 //              ),
-//            ),
-            Center(
-              child: _image == null
-                  ? Text('No image selected.')
-                  : Image.file(_image),
-            ),
-//            Center(
-//              child: Container(
-//                  margin: const EdgeInsets.all(10.0),
-//                  color: Colors.amber[600],
-//                  width: 48.0,
-//                  height: 48.0,
-//
-//              ),
-//            ),
-            _image == null
-                ? RaisedButton.icon(
-//                onPressed: () {
-//                  Navigator.pop(context);
-//                },
-                onPressed: getImage,
-                color: Colors.pink,
-                textColor: Colors.white,
-                icon: Icon(Icons.image),
-                label: Text('SCAN')
-            )
-                : RaisedButton(
-              onPressed: _makePostRequest,
-              color: Colors.pink,
-              textColor: Colors.white,
-              child: Text('USE'),
-            ),
-            Center(
-              child: _statusCode == null
-                  ? Text('')
-                  : Text('Successfully Scanned'),
-            )
-          ],
-        ),
+//               RaisedButton(
+//                  onPressed: _makePostRequest,
+//                  color: Colors.pink,
+//                  textColor: Colors.white,
+//                  child: Text('CONFIRM'),
+//               ),
+//              _scannedList == null
+//  //                ? Text('')
+//                  ? RaisedButton(
+//                    onPressed: _makePostRequest,
+//                    color: Colors.pink,
+//                    textColor: Colors.white,
+//                    child: Text('CONFIRM'),
+//                  )
+//                  : Text('')
+
+  //            Center(
+  //              child: _statusCode == null
+  //                  ? Text('')
+  //                  : Text(_statusCode.toString()),
+  //            )
+//            ],
+//          )
+            : ListView.builder(
+                      itemBuilder: _buildListItem,
+                      itemCount: _scannedList.length, // you can eliminate this param to make it infinite
+                ),
       ),
 //      body: Center(
 //        child: RaisedButton(
@@ -170,5 +205,15 @@ class _ScanState extends State<Scan> {
 //      ),
     );
   }
+
+  Widget _buildListItem( BuildContext context, int index ) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Text( _scannedList[index], style: TextStyle(fontSize: 22.0), ),
+      ),
+    );
+  }
+
 }
 

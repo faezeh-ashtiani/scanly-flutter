@@ -1,16 +1,18 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:http/http.dart';
 import 'package:scanly_ios/screens/recommendations/recommendationsList.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:http/http.dart' as http;
 
 import '../../screens/scan/scan.dart';
 import '../../screens/list/shoppingList.dart';
+import '../../screens/recommendations/recommendationsList.dart';
 import '../../screens/login/loginForm.dart';
 
 class FrontPage extends StatefulWidget {
-
   @override
   State<StatefulWidget> createState() {
     return _FrontPageState();
@@ -20,22 +22,65 @@ class FrontPage extends StatefulWidget {
 class _FrontPageState extends State<FrontPage> {
   final _indigoBlue = Color(0xff242A64);
   final _goldenRod = Color(0xffFCAE17);
-  final _baseUrl = "http://192.168.0.11:8080";
-  List<String> _shoppingList = [ "milk", "eggs", "bread", "apples", "oranges" ];
-  List<String> _recommendationsList = [ "milk", "eggs", "bread", "apples", "oranges" ];
+  final _baseUrl = "http://192.168.86.34:8080";
+  List<String> _shoppingList = ["milk", "eggs", "bread", "apples", "oranges"];
+  List<String> _recommendationsList = ["milk", "eggs", "bread", "apples", "oranges"];
   String _user = "";
+  File _image;
+  int _photoStatusCode;
+  Future<List<String>> scannedListFuture;
 
   void setUser(String userName) {
     setState(() {
-//      print("got here");
       _user = userName;
-      print("the set username is " + userName );
+      print("the set username is " + userName);
     });
+  }
+
+  void setShoppingList(List<String> shoppingList) {
+    setState(() {
+      _shoppingList = shoppingList;
+    });
+  }
+
+  Future<List<String>> _makePostRequest() async {
+    String url = "$_baseUrl/ocrImage";
+    final request = http.MultipartRequest('post', Uri.parse(url));
+    request.fields['name'] = _user;
+    // request.files.add(await http.MultipartFile.fromPath('file', _image.path));
+    request.files.add(await http.MultipartFile.fromPath('file', _image.path));
+    http.StreamedResponse response = await request.send();
+    print(response);
+    // response is an instance of StreamedResponse
+
+    setState(() {
+      _photoStatusCode = response.statusCode;
+    });
+
+    print(_photoStatusCode);
+
+    String rawJson = await response.stream.bytesToString();
+    print(rawJson);
+
+    Map<String, dynamic> map = jsonDecode(rawJson);
+    print(map);
+
+    List<String> localList = [];
+    for (var listItem in map["products"]) {
+      localList.add(listItem["name"]);
+    }
+
+    print(localList);
+
+    //    setState(() {
+    //      _scannedList = localList;
+    //    });
+    return localList;
   }
 
   _getShoppingList() async {
     // make GET request
-    print("i get here");
+    print("getting shopping list");
     String url = "$_baseUrl/getShoppingList?name=$_user";
     Response response = await get(url);
 
@@ -44,13 +89,13 @@ class _FrontPageState extends State<FrontPage> {
     print(statusCode);
 
     String json = response.body;
-//    print(json);
+    //    print(json);
     Map<String, dynamic> map = jsonDecode(json);
-//    print(map);
-//    print(map["result"][0]["name"]as String);
-//    Iterable<String> testList = map["result"].map((listItem) {
-//      return listItem["name"] as String;
-//    } as String);
+    //    print(map);
+    //    print(map["result"][0]["name"]as String);
+    //    Iterable<String> testList = map["result"].map((listItem) {
+    //      return listItem["name"] as String;
+    //    } as String);
 
     List<String> localList = [];
     for (var listItem in map["result"]) {
@@ -58,18 +103,15 @@ class _FrontPageState extends State<FrontPage> {
         localList.add(listItem["name"]);
       }
     }
-//    map["result"].map((listItem) => listItem["name"] as String).toList();
+    //    map["result"].map((listItem) => listItem["name"] as String).toList();
     print(localList);
-//    Future.delayed(const Duration(milliseconds: 3000), () {
-      setState(() {
-        _shoppingList = localList;
-      });
-//    });
+    setShoppingList(localList);
+
   }
 
   _getRecommendationsList() async {
     // make GET request
-    print("i get to the recommendations getter");
+    print("getting the reccomendations");
     String url = "$_baseUrl/getShoppingRecommendations?name=$_user";
     Response response = await get(url);
 
@@ -78,91 +120,109 @@ class _FrontPageState extends State<FrontPage> {
     print(statusCode);
 
     String json = response.body;
-//    print(json);
+    //    print(json);
     Map<String, dynamic> map = jsonDecode(json);
-//    print(map);
-//    print(map["result"][0]["name"]as String);
-//    Iterable<String> testList = map["result"].map((listItem) {
-//      return listItem["name"] as String;
-//    } as String);
+    //    print(map);
+    //    print(map["result"][0]["name"]as String);
+    //    Iterable<String> testList = map["result"].map((listItem) {
+    //      return listItem["name"] as String;
+    //    } as String);
 
     List<String> localList = [];
     for (var listItem in map["result"]) {
-//      if (listItem["showOnList"]) {
-        localList.add(listItem["name"]);
-//      }
+      localList.add(listItem["name"]);
     }
-//    map["result"].map((listItem) => listItem["name"] as String).toList();
+    //    map["result"].map((listItem) => listItem["name"] as String).toList();
     print(localList);
-//    Future.delayed(const Duration(milliseconds: 3000), () {
     setState(() {
       _recommendationsList = localList;
     });
-//    });
+  }
+
+  final _picker = ImagePicker();
+
+  Future<List<String>> _getImage() async {
+    final pickedFile = await _picker.getImage(source: ImageSource.camera);
+
+    setState(() {
+      _image = File(pickedFile.path);
+    });
+
+    print(_image);
+
+    return _makePostRequest();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: _goldenRod,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: _goldenRod,
         elevation: 0.0,
-//        title: Text(
-//          'Scanly',
-//          style: TextStyle(color: _indigoBlue),
-//        ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.shopping_cart, color: _indigoBlue,),
+            icon: Icon(
+              Icons.shopping_cart,
+              color: _indigoBlue,
+            ),
             onPressed: _user == "" || _user == "no one"
-                    ? () => setUser("no one")
-                    : () async {
-              await _getShoppingList();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ShoppingList(
-//                        key: ,
-                        indigoBlue: _indigoBlue,
-                        goldenRod: _goldenRod,
-//                        baseUrl: _baseUrl,
-                        user: _user,
-                        shoppingList : _shoppingList,
-                    )
-                  ),
-                );
-            },
+                ? () => setUser("no one")
+                : () async {
+                    await _getShoppingList();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ShoppingList(
+                                indigoBlue: _indigoBlue,
+                                goldenRod: _goldenRod,
+                                baseUrl: _baseUrl,
+                                user: _user,
+                                shoppingList: _shoppingList,
+                              )
+                      ),
+                    );
+                  },
           ),
           IconButton(
-          icon: Icon(Icons.receipt, color: _indigoBlue,),
-          onPressed: _user == "" || _user == "no one"
-            ? () => setUser("no one")
-            : () async {
-              await  _getRecommendationsList();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => RecommendationsList(
-                    indigoBlue: _indigoBlue,
-                    goldenRod: _goldenRod,
-                    // baseUrl: _baseUrl,
-                    user: _user,
-                    recommendationsList : _recommendationsList,
-                  )
-                ),
-              );
-            }
-          ),
+              icon: Icon(
+                Icons.receipt,
+                color: _indigoBlue,
+              ),
+              onPressed: _user == "" || _user == "no one"
+                  ? () => setUser("no one")
+                  : () async {
+                      await _getRecommendationsList();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RecommendationsList(
+                                  indigoBlue: _indigoBlue,
+                                  goldenRod: _goldenRod,
+                                  baseUrl: _baseUrl,
+                                  user: _user,
+                                  recommendationsList: _recommendationsList,
+                                  setShoppingList: setShoppingList,
+                                  shoppingList: _shoppingList,
+                                )
+                        ),
+                      );
+                    }),
           IconButton(
-            icon: Icon(Icons.account_circle, color: _indigoBlue,),
+            icon: Icon(
+              Icons.account_circle,
+              color: _indigoBlue,
+            ),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => LoginForm(
-                      indigoBlue: _indigoBlue,
-                      goldenRod: _goldenRod,
-                      baseUrl: _baseUrl,
-                      setUser: setUser,
-                  )
+                MaterialPageRoute(
+                    builder: (context) => LoginForm(
+                          indigoBlue: _indigoBlue,
+                          goldenRod: _goldenRod,
+                          baseUrl: _baseUrl,
+                          setUser: setUser,
+                        )
                 ),
               );
             },
@@ -172,68 +232,99 @@ class _FrontPageState extends State<FrontPage> {
       body: Column(
         children: <Widget>[
           Center(
-//          Padding(
-//              padding: EdgeInsets.all(20),
               child: Image.asset(
-                'assets/images/Scanly_logo_01.png',
+                'assets/images/Scanly_logo_02.png',
                 width: 300,
                 height: 400,
-//                colorBlendMode: ,
               )
           ),
-          Center(
-            child: _user == "no one"
-             ? Text(
-                "PLEASE LOGIN ",
-                style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 40.0,
-                  fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.underline,
-//                  decorationStyle: TextDecorationStyle.wavy,
-                )
-            )
-                : Text("")
-          ),
           Padding(
-          padding: EdgeInsets.all(20),
-//          Center(
+            padding: EdgeInsets.all(20),
             child: ButtonTheme(
               minWidth: 100.0,
               height: 50.0,
               child: RaisedButton(
                 color: _indigoBlue,
-                textColor: _goldenRod,
+                textColor: Colors.white,
                 child: Text('Scan Receipt'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Scan(
-                        indigoBlue: _indigoBlue,
-                        goldenRod: _goldenRod,
-                        baseUrl: _baseUrl,
-                        user: _user,
-                      )
-                    ),
-                  );
-                },
+                onPressed: _user == "" || _user == "no one"
+                    ? () => setUser("no one")
+                    : () {
+                        scannedListFuture = _getImage();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Scan(
+                                    indigoBlue: _indigoBlue,
+                                    goldenRod: _goldenRod,
+                                    user: _user,
+                                    scannedListFuture: scannedListFuture,
+                                  )
+                          ),
+                        );
+                      },
               ),
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(20),
-//          Center(
-            child: ButtonTheme(
-              minWidth: 100.0,
-              height: 50.0,
-              child: RaisedButton(
-                color: _goldenRod,
-                textColor: _indigoBlue,
-                child: Text('Logout'),
-                onPressed: () => setUser(""),
+              padding: EdgeInsets.all(20),
+              child: _user == "" || _user == "no one"
+                  ? _user == ""
+                      ? ButtonTheme(
+                          minWidth: 100.0,
+                          height: 50.0,
+                          child: RaisedButton(
+                            color: Colors.white,
+                            textColor: _indigoBlue,
+                            child: Text('Login'),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginForm(
+                                          indigoBlue: _indigoBlue,
+                                          goldenRod: _goldenRod,
+                                          baseUrl: _baseUrl,
+                                          setUser: setUser,
+                                        )
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                      : ButtonTheme(
+                          minWidth: 100.0,
+                          height: 50.0,
+                          child: RaisedButton(
+                            color: Colors.red,
+                            textColor: Colors.white,
+                            child: Text('Login'),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginForm(
+                                          indigoBlue: _indigoBlue,
+                                          goldenRod: _goldenRod,
+                                          baseUrl: _baseUrl,
+                                          setUser: setUser,
+                                        )
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                  : ButtonTheme(
+                      minWidth: 100.0,
+                      height: 50.0,
+                      child: RaisedButton(
+                        color: Colors.white,
+                        textColor: _indigoBlue,
+                        child: Text('Logout'),
+                        onPressed: () => setUser(""),
+                      ),
+                    )
               ),
-            ),
-          ),
         ],
       ),
     );

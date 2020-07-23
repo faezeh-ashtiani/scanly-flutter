@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 
 import '../../screens/scan/scan.dart';
 import '../../screens/list/shoppingList.dart';
+import '../../screens/addProduct/addProduct.dart';
 import '../../screens/recommendations/recommendationsList.dart';
 import '../../screens/login/loginForm.dart';
 
@@ -22,9 +23,15 @@ class FrontPage extends StatefulWidget {
 class _FrontPageState extends State<FrontPage> {
   final _indigoBlue = Color(0xff242A64);
   final _goldenRod = Color(0xffFCAE17);
-  final _baseUrl = "http://192.168.86.34:8080";
+  final _baseUrl = "http://192.168.86.21:8080";
   List<String> _shoppingList = ["milk", "eggs", "bread", "apples", "oranges"];
-  List<String> _recommendationsList = ["milk", "eggs", "bread", "apples", "oranges"];
+  List<String> _recommendationsList = [
+    "milk",
+    "eggs",
+    "bread",
+    "apples",
+    "oranges"
+  ];
   Future<List<String>> recommendationsListFuture;
   String _user = "";
   File _image;
@@ -62,7 +69,6 @@ class _FrontPageState extends State<FrontPage> {
 
     String rawJson = await response.stream.bytesToString();
     print("this is rawJson" + rawJson);
-
 
     Map<String, dynamic> map = jsonDecode(rawJson);
 //    print("this is map" + map.toString());
@@ -108,7 +114,6 @@ class _FrontPageState extends State<FrontPage> {
     //    map["result"].map((listItem) => listItem["name"] as String).toList();
     print(localList);
     setShoppingList(localList);
-
   }
 
   Future<List<String>> _getRecommendationsList() async {
@@ -182,8 +187,7 @@ class _FrontPageState extends State<FrontPage> {
                                 baseUrl: _baseUrl,
                                 user: _user,
                                 shoppingList: _shoppingList,
-                              )
-                      ),
+                              )),
                     );
                   },
           ),
@@ -194,7 +198,7 @@ class _FrontPageState extends State<FrontPage> {
               ),
               onPressed: _user == "" || _user == "no one"
                   ? () => setUser("no one")
-                  : ()  {
+                  : () {
                       recommendationsListFuture = _getRecommendationsList();
                       Navigator.push(
                         context,
@@ -207,9 +211,9 @@ class _FrontPageState extends State<FrontPage> {
 //                                  recommendationsList: _recommendationsList,
                                   setShoppingList: setShoppingList,
                                   shoppingList: _shoppingList,
-                                  recommendationsListFuture : recommendationsListFuture,
-                            )
-                        ),
+                                  recommendationsListFuture:
+                                      recommendationsListFuture,
+                                )),
                       );
                     }),
           IconButton(
@@ -226,8 +230,25 @@ class _FrontPageState extends State<FrontPage> {
                           goldenRod: _goldenRod,
                           baseUrl: _baseUrl,
                           setUser: setUser,
-                        )
-                ),
+                        )),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.add_circle_outline,
+              color: _indigoBlue,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => addProduct(
+                          indigoBlue: _indigoBlue,
+                          goldenRod: _goldenRod,
+                          baseUrl: _baseUrl,
+                          user: _user,
+                        )),
               );
             },
           ),
@@ -237,11 +258,10 @@ class _FrontPageState extends State<FrontPage> {
         children: <Widget>[
           Center(
               child: Image.asset(
-                'assets/images/Scanly_logo_02.png',
-                width: 300,
-                height: 400,
-              )
-          ),
+            'assets/images/Scanly_logo_02.png',
+            width: 300,
+            height: 400,
+          )),
           Padding(
             padding: EdgeInsets.all(20),
             child: ButtonTheme(
@@ -263,8 +283,7 @@ class _FrontPageState extends State<FrontPage> {
                                     goldenRod: _goldenRod,
                                     user: _user,
                                     scannedListFuture: scannedListFuture,
-                                  )
-                          ),
+                                  )),
                         );
                       },
               ),
@@ -290,8 +309,7 @@ class _FrontPageState extends State<FrontPage> {
                                           goldenRod: _goldenRod,
                                           baseUrl: _baseUrl,
                                           setUser: setUser,
-                                        )
-                                ),
+                                        )),
                               );
                             },
                           ),
@@ -312,8 +330,7 @@ class _FrontPageState extends State<FrontPage> {
                                           goldenRod: _goldenRod,
                                           baseUrl: _baseUrl,
                                           setUser: setUser,
-                                        )
-                                ),
+                                        )),
                               );
                             },
                           ),
@@ -327,8 +344,7 @@ class _FrontPageState extends State<FrontPage> {
                         child: Text('Logout'),
                         onPressed: () => setUser(""),
                       ),
-                    )
-              ),
+                    )),
         ],
       ),
     );

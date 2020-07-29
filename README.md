@@ -20,13 +20,13 @@ samples, guidance on mobile development, and a full API reference.
 
 * [Learning Goals](#learning-goals)
 * [Statement](#statement)
-* [Feature Set](#feature_set)
-* [Target Audience](#target_audience)
-* [Trello Board](#trello_board)
+* [Feature Set](#feature-set)
+* [Target Audience](#target-audience)
+* [Trello Board](#trello-board)
 * [Wireframes](#wireframes)
-* [Database Diagram](#database_diagram)
+* [Database Diagram](#database-diagram)
 * [Technologies](#technologies)
-* [Caostiobe Presentation Video](#capstone_presentation_video)
+* [Capstone Presentation Video](#capstone-presentation-video)
 
 
 ## Learning Goals

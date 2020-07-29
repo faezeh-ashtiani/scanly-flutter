@@ -11,7 +11,7 @@
 * [Wireframes](#wireframes)
 * [Database Diagram](#database-diagram)
 * [Technologies](#technologies)
-
+* [Getting Started](#getting-started)
 
 ## Learning Goals
 - Learning Java
@@ -20,7 +20,7 @@
 
 ## Capstone Presentation Video
 
-![Presentation](https://youtu.be/cbPPmXdEkhM)
+[Presentation Video](https://youtu.be/cbPPmXdEkhM)
 
 ## Statement
 
@@ -66,12 +66,31 @@ Link to the initial draft [wireframes](https://www.figma.com/file/HbPWcSwXNjvhAg
 ## Getting Started
 
 Installation of IntelliJ IDEA as your IDE:
-
+- Watch this [video](https://www.youtube.com/watch?v=FoBJBscsjGk) for Installing IntelliJ IDEA on Mac OS and follow it step by step.
+- Download IntelliJ from [here](https://www.jetbrains.com/idea/). We used the ultimate version using a student license.
 
 Installation of Flutter for Mac OS:
 - Watch this [video](https://youtu.be/x0uinJvhNxI?t=1119) for Flutter macOS Setup from 18:31 step by step that helps with the setup.
 - follow all the steps on this [link](https://flutter.dev/docs/get-started/install/macos) from the Flutter website.
 - follow all these steps on this [link](https://flutter.dev/docs/get-started/editor?tab=androidstudio) to setup the required plugins on your IntelliJ IDE.
+- to run the mobile app on your phone follow these steps:
+  - Download the front-end flutter/ dart [repository](https://github.com/faezeh-ashtiani/scanly-flutter) from github onto your machine.
+  - Connect your phone to your computer with a cable.
+  - Open flutter project in IntelliJ.
+  - in terminal use command ifconfig en0 to find out your IP listed after inet
+  - paste your IP into the lib/screens/front/frontPage.dart, line 26, in the string used as the base url.
+  - make sure the back end server is running.
+  - choose your device on the top from the device drop down and run the main file.
+  - if you don't find your device from the dropdown, fun the command flutter run from the terminal within intelliJ while your phone is connecte.
+
+Installation of Backend Server:
+- [Deployed API](https://scanly-ada.herokuapp.com/).
+- To run the Restful Server off of your machine follow these steps:
+  * Download the Java Development Kit [here](https://www.oracle.com/java/technologies/javase-downloads.html).
+  * Watch this [video](https://www.youtube.com/watch?v=nk5GmfhqSdc).
+  * Clone this [repo](https://github.com/halahaddad1/scanly.git).
+  * Run the AppApplication file.
+
 
 
 

@@ -1,24 +1,9 @@
 # Scanly (front end)
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# scanly-flutter
-
 ## Table of Contents
 
 * [Learning Goals](#learning-goals)
+* [Capstone Presentation Video](#capstone-presentation-video)
 * [Statement](#statement)
 * [Feature Set](#feature-set)
 * [Target Audience](#target-audience)
@@ -26,13 +11,16 @@ samples, guidance on mobile development, and a full API reference.
 * [Wireframes](#wireframes)
 * [Database Diagram](#database-diagram)
 * [Technologies](#technologies)
-* [Capstone Presentation Video](#capstone-presentation-video)
 
 
 ## Learning Goals
 - Learning Java
 - Learn how to build a mobile app
 - Familiarize with machine learning algorithm
+
+## Capstone Presentation Video
+
+![Presentation](https://youtu.be/cbPPmXdEkhM)
 
 ## Statement
 
@@ -73,14 +61,21 @@ Link to the initial draft [wireframes](https://www.figma.com/file/HbPWcSwXNjvhAg
 
 ## Technologies
 
-- Back-end Technology
-- Front-end Technology
-- Infrastructure
-  - How will you deploy and host your app?
+![Technologies](./assets/images/Scanly_techstack.jpg)
+  
+## Getting Started
 
-## Capstone Presentation Video
+Installation of IntelliJ IDEA as your IDE:
 
-![Presentation](https://youtu.be/cbPPmXdEkhM)
+
+Installation of Flutter for Mac OS:
+- Watch this [video](https://youtu.be/x0uinJvhNxI?t=1119) for Flutter macOS Setup from 18:31 step by step that helps with the setup.
+- follow all the steps on this [link](https://flutter.dev/docs/get-started/install/macos) from the Flutter website.
+- follow all these steps on this [link](https://flutter.dev/docs/get-started/editor?tab=androidstudio) to setup the required plugins on your IntelliJ IDE.
+
+
+
+
 
 
 

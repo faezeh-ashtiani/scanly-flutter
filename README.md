@@ -21,7 +21,7 @@
 ## Capstone Presentation Video
 
 [Presentation Video](https://youtu.be/cbPPmXdEkhM)
-![Video Presentation](https://img.youtube.com/vi/cbPPmXdEkhM/maxresdefault.jpg).
+![Video Presentation](https://img.youtube.com/vi/cbPPmXdEkhM/maxresdefault.jpg)
 
 ## Statement
 

@@ -1,4 +1,5 @@
-# Scanly (front end)
+# Scanly (frontend)
+for backend repo go [here](https://github.com/halahaddad1/scanly.git).
 
 ## Table of Contents
 
@@ -74,8 +75,10 @@ Installation of Flutter for Mac OS:
 - Watch this [video](https://youtu.be/x0uinJvhNxI?t=1119) for Flutter macOS Setup from 18:31 step by step that helps with the setup.
 - follow all the steps on this [link](https://flutter.dev/docs/get-started/install/macos) from the Flutter website.
 - follow all these steps on this [link](https://flutter.dev/docs/get-started/editor?tab=androidstudio) to setup the required plugins on your IntelliJ IDE.
+
+Installation of Frontend Server:
+- Download the front-end flutter/ dart [repository](https://github.com/faezeh-ashtiani/scanly-flutter) from github onto your machine.
 - to run the mobile app on your phone follow these steps:
-  - Download the front-end flutter/ dart [repository](https://github.com/faezeh-ashtiani/scanly-flutter) from github onto your machine.
   - Connect your phone to your computer with a cable.
   - Open flutter project in IntelliJ.
   - in terminal use command ifconfig en0 to find out your IP listed after inet
@@ -92,11 +95,6 @@ Installation of Backend Server:
   * Clone this [repo](https://github.com/halahaddad1/scanly.git).
   * Run the AppApplication file.
 
-
-
-
-
-
-
-
+Put database configurations in the Spring Boot file serviceAccount.json in the root of the project.
+The authorization code for the Klippa API is placed in the Spring Boot directory: src/main/recources/application.properties
 

@@ -16,6 +16,13 @@ For help getting started with Flutter, view our
 samples, guidance on mobile development, and a full API reference.
 # scanly-flutter
 
+## Table of Contents
+
+* [Introduction and Technologies](#introduction-and-technologies)
+* [Django webapp](#django-webapp)
+* [Data visualization dashboard](#data-visualization-dashboard)
+* [React Native app](#react-native-app)
+
 ## Learning Goals
 - Goal 1
 - Goal 2

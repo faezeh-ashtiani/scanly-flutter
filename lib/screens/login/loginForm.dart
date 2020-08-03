@@ -57,65 +57,45 @@ class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: widget.goldenRod,
-        appBar: AppBar(
-          iconTheme: IconThemeData(
+      backgroundColor: widget.goldenRod,
+      appBar: AppBar(
+        iconTheme: IconThemeData(
+          color: widget.indigoBlue,
+        ),
+        title: Text(
+          'User Login',
+          style: TextStyle(
+            fontSize: 24.0,
             color: widget.indigoBlue,
           ),
-          title: Text(
-            'User Login',
-            style: TextStyle(
-              fontSize: 24.0,
-              color: widget.indigoBlue,
+        ),
+        backgroundColor: widget.goldenRod,
+        elevation: 0.0,
+      ),
+
+      body: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(60),
+            child: TextField(
+              controller: myController,
             ),
           ),
-          backgroundColor: widget.goldenRod,
-          elevation: 0.0,
-        ),
-
-        body: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(60),
-              child: TextField(
-                controller: myController,
+          Padding(
+            padding: const EdgeInsets.all(30),
+            child: ButtonTheme(
+              minWidth: 100.0,
+              height: 50.0,
+              child: RaisedButton(
+                color: widget.indigoBlue,
+                textColor: widget.goldenRod,
+                child: Text('Login'),
+                onPressed: _sendUserInfo,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(30),
-              child: ButtonTheme(
-                minWidth: 100.0,
-                height: 50.0,
-                child: RaisedButton(
-                  color: widget.indigoBlue,
-                  textColor: widget.goldenRod,
-                  child: Text('Login'),
-                  onPressed: _sendUserInfo,
-                ),
-              ),
-            ),
-          ],
-        )
-//      body: Padding(
-//        padding: const EdgeInsets.all(16.0),
-//        child: TextField(
-//          controller: myController,
-//        ),
-//      ),
-//      floatingActionButton: Padding(
-//        padding: EdgeInsets.all(25),
-//        child: ButtonTheme(
-//          minWidth: 100.0,
-//          height: 50.0,
-//          child: RaisedButton(
-//            color: widget.indigoBlue,
-//            textColor: widget.goldenRod,
-//            child: Text('Login'),
-//            onPressed: _sendUserInfo,
-//          ),
-//        ),
-//      ),
-
-        );
+          ),
+        ],
+      )
+    );
   }
 }

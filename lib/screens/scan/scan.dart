@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class Scan extends StatefulWidget {
   final Color indigoBlue;
   final Color goldenRod;
@@ -28,9 +27,7 @@ class _ScanState extends State<Scan> {
     });
   }
 
-
   List<String> _scannedList;
-
 
   @override
   Widget build(BuildContext context) {
@@ -53,21 +50,21 @@ class _ScanState extends State<Scan> {
         padding: EdgeInsets.all(5),
 //        width: double.infinity,
         child: _scannedList == null
-          ? Center(
-            child: SizedBox(
-              child: CircularProgressIndicator(
-                valueColor: // _colorTween,
-                AlwaysStoppedAnimation<Color>(widget.goldenRod),
-                strokeWidth: 30,
-              ),
-              height: 150,
-              width: 150,
+        ? Center(
+          child: SizedBox(
+            child: CircularProgressIndicator(
+              valueColor: // _colorTween,
+              AlwaysStoppedAnimation<Color>(widget.goldenRod),
+              strokeWidth: 30,
             ),
-          )
-            : ListView.builder(
-                      itemBuilder: _buildListItem,
-                      itemCount: _scannedList.length, // you can eliminate this param to make it infinite
-                ),
+            height: 150,
+            width: 150,
+          ),
+        )
+        : ListView.builder(
+            itemBuilder: _buildListItem,
+            itemCount: _scannedList.length, // you can eliminate this param to make it infinite
+        ),
       ),
     );
   }
@@ -78,7 +75,6 @@ class _ScanState extends State<Scan> {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Text( _scannedList[index], style: TextStyle(fontSize: 22.0), ),
-
       ),
     );
   }

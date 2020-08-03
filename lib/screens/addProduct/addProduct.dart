@@ -5,14 +5,13 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import '../../screens/list/shoppingList.dart';
 
-// Define a custom Form widget.
-class addProduct extends StatefulWidget {
+class AddProduct extends StatefulWidget {
   final Color indigoBlue;
   final Color goldenRod;
   final String baseUrl;
   final String user;
 
-  addProduct({
+  AddProduct({
     this.indigoBlue,
     this.goldenRod,
     this.baseUrl,
@@ -20,10 +19,10 @@ class addProduct extends StatefulWidget {
   });
 
   @override
-  _addProductState createState() => _addProductState();
+  _AddProductState createState() => _AddProductState();
 }
 
-class _addProductState extends State<addProduct> {
+class _AddProductState extends State<AddProduct> {
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
   final myController = TextEditingController();
@@ -54,6 +53,10 @@ class _addProductState extends State<addProduct> {
     print(_statusCode);
     print(responseText);
     await _getShoppingList();
+
+    // TO_DO
+    // use a Future here instead to make sure the shopping list shows the new
+    // item when we pop back
     Navigator.pop(context, MaterialPageRoute(
         builder: (context) => ShoppingList()));
   }
@@ -78,19 +81,13 @@ class _addProductState extends State<addProduct> {
     String json = response.body;
     //    print(json);
     Map<String, dynamic> map = jsonDecode(json);
-    //    print(map);
-    //    print(map["result"][0]["name"]as String);
-    //    Iterable<String> testList = map["result"].map((listItem) {
-    //      return listItem["name"] as String;
-    //    } as String);
-
     List<String> localList = [];
     for (var listItem in map["result"]) {
       if (listItem["showOnList"]) {
         localList.add(listItem["name"]);
       }
     }
-    //    map["result"].map((listItem) => listItem["name"] as String).toList();
+
     print(localList);
     await setShoppingList(localList);
   }
@@ -98,64 +95,44 @@ class _addProductState extends State<addProduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: widget.goldenRod,
-        appBar: AppBar(
-          iconTheme: IconThemeData(
+      backgroundColor: widget.goldenRod,
+      appBar: AppBar(
+        iconTheme: IconThemeData(
+          color: widget.indigoBlue,
+        ),
+        title: Text(
+          'Add Product',
+          style: TextStyle(
+            fontSize: 24.0,
             color: widget.indigoBlue,
           ),
-          title: Text(
-            'Add Product',
-            style: TextStyle(
-              fontSize: 24.0,
-              color: widget.indigoBlue,
+        ),
+        backgroundColor: widget.goldenRod,
+        elevation: 0.0,
+      ),
+      body: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(60),
+            child: TextField(
+              controller: myController,
             ),
           ),
-          backgroundColor: widget.goldenRod,
-          elevation: 0.0,
-        ),
-        body: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(60),
-              child: TextField(
-                controller: myController,
+          Padding(
+            padding: const EdgeInsets.all(30),
+            child: ButtonTheme(
+              minWidth: 100.0,
+              height: 50.0,
+              child: RaisedButton(
+                color: widget.indigoBlue,
+                textColor: widget.goldenRod,
+                child: Text('Add Product to Shopping List'),
+                onPressed: _sendProductInfo,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(30),
-              child: ButtonTheme(
-                minWidth: 100.0,
-                height: 50.0,
-                child: RaisedButton(
-                  color: widget.indigoBlue,
-                  textColor: widget.goldenRod,
-                  child: Text('Add Product to Shopping List'),
-                  onPressed: _sendProductInfo,
-                ),
-              ),
-            ),
-          ],
-        )
-//      body: Padding(
-//        padding: const EdgeInsets.all(16.0),
-//        child: TextField(
-//          controller: myController,
-//        ),
-//      ),
-//      floatingActionButton: Padding(
-//        padding: EdgeInsets.all(25),
-//        child: ButtonTheme(
-//          minWidth: 100.0,
-//          height: 50.0,
-//          child: RaisedButton(
-//            color: widget.indigoBlue,
-//            textColor: widget.goldenRod,
-//            child: Text('Login'),
-//            onPressed: _sendUserInfo,
-//          ),
-//        ),
-//      ),
-
-        );
+          ),
+        ],
+      )
+    );
   }
 }

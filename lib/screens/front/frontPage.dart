@@ -64,14 +64,11 @@ class _FrontPageState extends State<FrontPage> {
     print("this is rawJson" + rawJson);
 
     Map<String, dynamic> map = jsonDecode(rawJson);
-//    print("this is map" + map.toString());
 
     List<String> localList = [];
     for (var listItem in map["products"]) {
       localList.add(listItem["name"]);
     }
-
-//    print(localList);
 
     //    setState(() {
     //      _scannedList = localList;
@@ -90,13 +87,7 @@ class _FrontPageState extends State<FrontPage> {
     print(statusCode);
 
     String json = response.body;
-    //    print(json);
     Map<String, dynamic> map = jsonDecode(json);
-    //    print(map);
-    //    print(map["result"][0]["name"]as String);
-    //    Iterable<String> testList = map["result"].map((listItem) {
-    //      return listItem["name"] as String;
-    //    } as String);
 
     List<String> localList = [];
     for (var listItem in map["result"]) {
@@ -104,7 +95,7 @@ class _FrontPageState extends State<FrontPage> {
         localList.add(listItem["name"]);
       }
     }
-    //    map["result"].map((listItem) => listItem["name"] as String).toList();
+
     print(localList);
     setShoppingList(localList);
   }
@@ -120,7 +111,6 @@ class _FrontPageState extends State<FrontPage> {
     print(statusCode);
 
     String json = response.body;
-    //    print(json);
     Map<String, dynamic> map = jsonDecode(json);
     //    print(map);
     //    print(map["result"][0]["name"]as String);
@@ -134,9 +124,9 @@ class _FrontPageState extends State<FrontPage> {
     }
     //    map["result"].map((listItem) => listItem["name"] as String).toList();
     print(localList);
-//    setState(() {
-//      _recommendationsList = localList;
-//    });
+    //    setState(() {
+    //      _recommendationsList = localList;
+    //    });
     return localList;
   }
 
@@ -150,7 +140,6 @@ class _FrontPageState extends State<FrontPage> {
     });
 
     print(_image);
-
     return _makePostRequest();
   }
 
@@ -168,20 +157,20 @@ class _FrontPageState extends State<FrontPage> {
               color: _indigoBlue,
             ),
             onPressed: _user == "" || _user == "no one"
-              ? () => setUser("no one")
-              :() {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => addProduct(
-                      indigoBlue: _indigoBlue,
-                      goldenRod: _goldenRod,
-                      baseUrl: _baseUrl,
-                      user: _user,
-                    )
-                  ),
-                );
-              },
+            ? () => setUser("no one")
+            :() {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddProduct(
+                    indigoBlue: _indigoBlue,
+                    goldenRod: _goldenRod,
+                    baseUrl: _baseUrl,
+                    user: _user,
+                  )
+                ),
+              );
+            },
           ),
           IconButton(
             icon: Icon(
@@ -189,22 +178,22 @@ class _FrontPageState extends State<FrontPage> {
               color: _indigoBlue,
             ),
             onPressed: _user == "" || _user == "no one"
-              ? () => setUser("no one")
-              : () async {
-                  await _getShoppingList();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ShoppingList(
-                        indigoBlue: _indigoBlue,
-                        goldenRod: _goldenRod,
-                        baseUrl: _baseUrl,
-                        user: _user,
-                        shoppingList: _shoppingList,
-                      )
-                    ),
-                  );
-                },
+            ? () => setUser("no one")
+            : () async {
+                await _getShoppingList();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ShoppingList(
+                      indigoBlue: _indigoBlue,
+                      goldenRod: _goldenRod,
+                      baseUrl: _baseUrl,
+                      user: _user,
+                      shoppingList: _shoppingList,
+                    )
+                  ),
+                );
+              },
           ),
 
           IconButton(
@@ -270,21 +259,21 @@ class _FrontPageState extends State<FrontPage> {
                 textColor: Colors.white,
                 child: Text('Scan Receipt'),
                 onPressed: _user == "" || _user == "no one"
-                  ? () => setUser("no one")
-                  : () {
-                    scannedListFuture = _getImage();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Scan(
-                          indigoBlue: _indigoBlue,
-                          goldenRod: _goldenRod,
-                          user: _user,
-                          scannedListFuture: scannedListFuture,
-                        )
-                      ),
-                    );
-                  },
+                ? () => setUser("no one")
+                : () {
+                  scannedListFuture = _getImage();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Scan(
+                        indigoBlue: _indigoBlue,
+                        goldenRod: _goldenRod,
+                        user: _user,
+                        scannedListFuture: scannedListFuture,
+                      )
+                    ),
+                  );
+                },
               ),
             ),
           ),

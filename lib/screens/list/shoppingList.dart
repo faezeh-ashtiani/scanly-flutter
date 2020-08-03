@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
-import 'dart:convert';
 
 import '../../screens/addProduct/addProduct.dart';
 
 class ShoppingList extends StatefulWidget {
-//  final Key key;
+  //  final Key key;
   final Color indigoBlue;
   final Color goldenRod;
   final String baseUrl;
@@ -14,7 +13,7 @@ class ShoppingList extends StatefulWidget {
   List<String> shoppingList;
 
   ShoppingList({
-//    this.key,
+    //    this.key,
     this.indigoBlue,
     this.goldenRod,
     this.baseUrl,
@@ -72,7 +71,7 @@ class _ShoppingListState extends State<ShoppingList> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => addProduct(
+                  builder: (context) => AddProduct(
                     indigoBlue: widget.indigoBlue,
                     goldenRod: widget.goldenRod,
                     baseUrl: widget.baseUrl,
@@ -91,15 +90,6 @@ class _ShoppingListState extends State<ShoppingList> {
             itemBuilder: _buildDismissibleListItem,
             itemCount: widget.shoppingList.length, // you can eliminate this param to make it infinite
           )
-      ),
-    );
-  }
-
-  Widget _buildShoppingListItem( BuildContext context, int index ) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Text( widget.shoppingList[index], style: TextStyle(fontSize: 22.0, color: Colors.white), ),
       ),
     );
   }
@@ -132,13 +122,23 @@ class _ShoppingListState extends State<ShoppingList> {
           color: Colors.white,
         ),
       ),
-//      child: Card(
+      //  child: Card(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
             item, style: TextStyle(fontSize: 22.0),  ),
         ),
-//      )
+      //  )
+    );
+  }
+
+  // not used
+  Widget _buildShoppingListItem( BuildContext context, int index ) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Text( widget.shoppingList[index], style: TextStyle(fontSize: 22.0, color: Colors.white), ),
+      ),
     );
   }
 

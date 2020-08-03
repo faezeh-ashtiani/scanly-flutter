@@ -9,11 +9,8 @@ class RecommendationsList extends StatefulWidget {
   final Color indigoBlue;
   final Color goldenRod;
   final String user;
-
-//  List<String> recommendationsList;
   final String baseUrl;
   final Function setShoppingList;
-//  List<String> shoppingList;
   Future<List<String>> recommendationsListFuture;
 
   RecommendationsList({
@@ -23,7 +20,6 @@ class RecommendationsList extends StatefulWidget {
     this.recommendationsListFuture,
     this.baseUrl,
     this.setShoppingList,
-//    this.shoppingList,
   });
 
   @override
@@ -94,13 +90,7 @@ class _RecommendationsListState extends State<RecommendationsList> {
     print(statusCode);
 
     String json = response.body;
-    //    print(json);
     Map<String, dynamic> map = jsonDecode(json);
-    //    print(map);
-    //    print(map["result"][0]["name"]as String);
-    //    Iterable<String> testList = map["result"].map((listItem) {
-    //      return listItem["name"] as String;
-    //    } as String);
 
     List<String> localList = [];
     for (var listItem in map["result"]) {
@@ -108,7 +98,6 @@ class _RecommendationsListState extends State<RecommendationsList> {
         localList.add(listItem["name"]);
       }
     }
-    //    map["result"].map((listItem) => listItem["name"] as String).toList();
     print(localList);
     setShoppingList(localList);
   }
@@ -128,10 +117,6 @@ class _RecommendationsListState extends State<RecommendationsList> {
           ),
         ),
         elevation: 10,
-//        title: Text(
-//          'Scanly',
-//          style: TextStyle(color: mnBlue),
-//        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(
@@ -143,90 +128,40 @@ class _RecommendationsListState extends State<RecommendationsList> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => ShoppingList(
-//                        key: ,
-                          indigoBlue: widget.indigoBlue,
-                          goldenRod: widget.goldenRod,
-                          baseUrl: widget.baseUrl,
-                          user: widget.user,
-                          shoppingList: _shoppingList,
-                        )),
+                  builder: (context) => ShoppingList(
+                    // key: ,
+                    indigoBlue: widget.indigoBlue,
+                    goldenRod: widget.goldenRod,
+                    baseUrl: widget.baseUrl,
+                    user: widget.user,
+                    shoppingList: _shoppingList,
+                  )
+                ),
               );
             },
           ),
         ],
       ),
       body: Container(
-          padding: EdgeInsets.all(5),
-          child: _recommendationsList == null
-              ? Center(
-                  child: SizedBox(
-                    child: CircularProgressIndicator(
-                      valueColor: // _colorTween,
-                          AlwaysStoppedAnimation<Color>(widget.indigoBlue),
-                      strokeWidth: 30,
-                    ),
-                    height: 150,
-                    width: 150,
-                  ),
-                )
-              : ListView.builder(
-                  itemBuilder: _buildSlidableListItem,
-                  itemCount: _recommendationsList
-                      .length, // you can eliminate this param to make it infinite
-                )),
-    );
-  }
-
-  Widget _buildRecommendationsListItem(BuildContext context, int index) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Text(
-          _recommendationsList[index],
-          style: TextStyle(fontSize: 22.0),
-        ),
+        padding: EdgeInsets.all(5),
+        child: _recommendationsList == null
+        ? Center(
+          child: SizedBox(
+            child: CircularProgressIndicator(
+              valueColor: // _colorTween,
+                  AlwaysStoppedAnimation<Color>(widget.indigoBlue),
+              strokeWidth: 30,
+            ),
+            height: 150,
+            width: 150,
+          ),
+        )
+        : ListView.builder(
+          itemBuilder: _buildSlidableListItem,
+          itemCount: _recommendationsList
+              .length, // you can eliminate this param to make it infinite
+        )
       ),
-    );
-  }
-
-  Widget _buildDismissibleListItem(BuildContext context, int index) {
-    final item = _recommendationsList[index];
-
-    return Dismissible(
-      // Each Dismissible must contain a Key. Keys allow Flutter to
-      // uniquely identify widgets.
-      key: Key(item),
-      // Provide a function that tells the app
-      // what to do after an item has been swiped away.
-      onDismissed: (direction) {
-        // Remove the item from the data source.
-        setState(() {
-          _recommendationsList.removeAt(index);
-        });
-
-        // Then show a snackbar.
-        Scaffold.of(context)
-            .showSnackBar(SnackBar(content: Text("$item dismissed")));
-      },
-      // Show a red background as the item is swiped away.
-      background: Container(
-//        padding: EdgeInsets.only(right: 28.0),
-//        alignment: AlignmentDirectional.centerStart,
-        color: Colors.red,
-        child: Icon(
-          Icons.delete_forever,
-          color: Colors.white,
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Text(
-          item,
-          style: TextStyle(fontSize: 22.0),
-        ),
-      ),
-//      ListTile(title: Text('$item')),
     );
   }
 
@@ -243,20 +178,20 @@ class _RecommendationsListState extends State<RecommendationsList> {
           style: TextStyle(fontSize: 22.0),
         ),
       ),
-//      actions: <Widget>[
-//        IconSlideAction(
-//        caption: 'Archive',
-//        color: Colors.blue,
-//        icon: Icons.archive,
-//        onTap: () {print('archive');},
-//        ),
-//        IconSlideAction(
-//        caption: 'Share',
-//        color: Colors.indigo,
-//        icon: Icons.share,
-//        onTap: () {print('share');},
-//        ),
-//      ],
+      // actions: <Widget>[
+      //   IconSlideAction(
+      //   caption: 'Archive',
+      //   color: Colors.blue,
+      //   icon: Icons.archive,
+      //   onTap: () {print('archive');},
+      //   ),
+      //   IconSlideAction(
+      //   caption: 'Share',
+      //   color: Colors.indigo,
+      //   icon: Icons.share,
+      //   onTap: () {print('share');},
+      //   ),
+      // ],
       secondaryActions: <Widget>[
         IconSlideAction(
           caption: 'Add',
@@ -268,9 +203,6 @@ class _RecommendationsListState extends State<RecommendationsList> {
             setState(() {
               _recommendationsList.removeAt(index);
             });
-//            setState(() {
-//              widget.shoppingList.add(_recommendationsList[index]);
-//            });
           },
         ),
         IconSlideAction(
@@ -292,4 +224,5 @@ class _RecommendationsListState extends State<RecommendationsList> {
       ],
     );
   }
+
 }
